@@ -21,6 +21,10 @@ public class Category {
     @Id
     private String id;
     private String name;
+    private String description;
+
+    private String photoUrl;
+    private boolean active = true;
     @DBRef
     private Collection<Product> products = new ArrayList<>();
 
@@ -29,6 +33,11 @@ public class Category {
         return "Category{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
+                ", active='" + active + '\'' +
+
+
                 '}';
     }
 }
