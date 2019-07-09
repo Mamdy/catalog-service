@@ -15,18 +15,22 @@ import org.springframework.web.multipart.MultipartFile;
 //@ToString
 public class Product {
     private String id;
+    private String code;
     private String name;
     private double price;
+    private String brand;
     private String description;
     private double currentPrice;
     private boolean promotion;
     private boolean selected;
     private boolean available;
+    private boolean active;
     private int quantite;
     private String photoUrl;
     private int supplierId;
     private int purchases;
     private MultipartFile file;
+    private int views;
 
     @DBRef
     private Category category;

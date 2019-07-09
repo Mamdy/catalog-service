@@ -6,7 +6,7 @@ import com.mamdy.entites.Product;
 import java.util.List;
 
 public interface Categories {
-    Category saveProduct(Category category);
+    Category saveCategorie(Category category);
     List<Category> getAllcategories();
     Category getCategoryById(int id);
 
