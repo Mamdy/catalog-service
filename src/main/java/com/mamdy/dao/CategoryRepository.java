@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.mamdy.entites.Category;
 
-@RepositoryRestResource
+//@RepositoryRestResource(exported = false)
 public interface CategoryRepository extends MongoRepository<Category, String> {
 	public static final Logger logger = LoggerFactory.getLogger(CategoryRepository.class);
 
