@@ -1,29 +1,5 @@
 package com.mamdy.web;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.validation.ValidationException;
-
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,11 +7,27 @@ import com.mamdy.dao.CategoryRepository;
 import com.mamdy.dao.ProductRepository;
 import com.mamdy.entites.Category;
 import com.mamdy.entites.Product;
-import com.mamdy.soa.interf.ProductService;
+import com.mamdy.soa.ProductService;
 import com.mamdy.utils.FileUploadUtility;
 import com.mamdy.utils.Response;
-
 import lombok.Data;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.ValidationException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RestController
@@ -123,9 +115,30 @@ public class CatalogueController {
 		}
 		return errors;
 
-	
+
 	}
-	
+
+	// Test avec ma classe Utilitaire
+	@PostMapping("/saveProduct")
+	public ResponseEntity<Response> saveProduct(@RequestBody final String formProduct) throws IOException {
+		ProductFormData productFormData = new ObjectMapper().readValue(formProduct, ProductFormData.class);
+
+		Category c = categoryRepository.findByName(productFormData.getCategory());
+		if (c != null) {
+			Product dbProduct = productService.saveProduct(productFormData.getName(),
+					productFormData.getMarque(), productFormData.getDescription(), productFormData.getPrice(),
+					productFormData.getQuantity(), c);
+			if (dbProduct != null) {
+				return new ResponseEntity<Response>(new Response("Product is Saved Successfully"), HttpStatus.OK);
+			}
+
+
+		}
+
+		return null;
+	}
+
+
 	// Test avec ma classe Utilitaire
 	@PostMapping("/saveProductInserverAndDataBaseWithFileUploadUtility")
 	public ResponseEntity<Response> saveProductInserverFileUploadUtiliy(
@@ -329,7 +342,7 @@ class ProductFormData {
 	private String description;
 	private double price;
 	private int quantity;
-	private MultipartFile file;
+	//private MultipartFile file;
 //	private byte[] photo;
 //	private String fileName;
 	private String category;

@@ -27,16 +27,16 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 
         //authoriser les requête provenant d'un domaine x=> vers mon domaine
+
+        //authoriser les requête provenant d'un domaine x=> vers mon domaine
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, authorization");
         response.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Credentials, authorization");
         response.addHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH");
         if (request.getMethod().equals("OPTIONS")) {
             response.setStatus(HttpServletResponse.SC_OK);
-        } /*else if (request.getRequestURI().equals("/login")) {
-            filterChain.doFilter(request, response);
+        } else {
 
-        }*/ else {
             String jwtToken = request.getHeader(SecurityParams.JWT_HEADER_NAME);
             System.out.println("TOKEN=" + jwtToken);
             if (jwtToken == null || !jwtToken.startsWith(SecurityParams.HEADER_PREFIX)) {
@@ -64,4 +64,5 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         }
     }
+
 }
