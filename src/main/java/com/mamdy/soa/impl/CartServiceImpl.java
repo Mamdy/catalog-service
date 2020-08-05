@@ -3,13 +3,17 @@ package com.mamdy.soa.impl;
 import com.mamdy.dao.CartRepository;
 import com.mamdy.dao.OrderRepository;
 import com.mamdy.dao.ProductInOrderRepository;
-import com.mamdy.entites.*;
+import com.mamdy.entites.Cart;
+import com.mamdy.entites.Client;
+import com.mamdy.entites.OrderMain;
+import com.mamdy.entites.ProductInOrder;
 import com.mamdy.soa.CartService;
 import com.mamdy.soa.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
@@ -55,13 +59,12 @@ public class CartServiceImpl implements CartService {
 
         cartRepository.save(finalCart);
 
-
     }
 
     @Override
     @Transactional
-    public void delete(String itemId, User user) {
-        Optional<ProductInOrder> productInOrder = user.getCart().getProductsInOrder().stream()
+    public void delete(String itemId, Client client) {
+        Optional<ProductInOrder> productInOrder = client.getCart().getProductsInOrder().stream()
                 .filter(e -> itemId.equals(e.getProductId()))
                 .findFirst();
 
@@ -74,10 +77,23 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void checkout(User user) {
+    public void checkout(Client client) {
+//        LocalDateTime now = LocalDateTime.now();
+//        System.out.println("Before Formatting: " + now);
+//        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//        String formatDateTime = now.format(format);
+//        System.out.println("After Formatting: " + formatDateTime);
         // Creation d'une commande
-        OrderMain orderMain = new OrderMain(user);
+        OrderMain order = new OrderMain(client);
+        order.setCreateTime(LocalDateTime.now());
+        order = orderRepository.save(order);
+        for (ProductInOrder productInOrder : client.getCart().getProductsInOrder()) {
+            productInOrder.setCart(null);
+            productInOrder.setOrderMain(order);
+            productService.decreaseStock(productInOrder.getProductId(), productInOrder.getCount());
+            productInOrderRepository.save(productInOrder);
 
+        }
 
     }
 }

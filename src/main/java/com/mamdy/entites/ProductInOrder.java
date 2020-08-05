@@ -26,6 +26,7 @@ public class ProductInOrder {
     @Id
     private String id;
 
+
     //    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 ////    @JoinColumn(name = "cart_id")
     @JsonIgnore
@@ -37,6 +38,7 @@ public class ProductInOrder {
     @JsonIgnore
     private OrderMain orderMain;
 
+    private String productCode;
 
     @NotEmpty
     private String productId;
@@ -65,6 +67,7 @@ public class ProductInOrder {
 
     public ProductInOrder(Product product, Integer quantity) {
         this.productId = product.getId();
+        this.productCode = product.getCode();
         this.productName = product.getName();
         this.productDescription = product.getDescription();
         this.productIcon = product.getPhotoUrl();

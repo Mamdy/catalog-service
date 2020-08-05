@@ -3,7 +3,6 @@ package com.mamdy.soa;
 import com.mamdy.entites.Cart;
 import com.mamdy.entites.Client;
 import com.mamdy.entites.ProductInOrder;
-import com.mamdy.entites.User;
 
 import java.util.Collection;
 
@@ -12,8 +11,8 @@ public interface CartService {
 
     void mergeLocalCart(Collection<ProductInOrder> productInOrders, Client client);
 
-    void delete(String itemId, User user);
+    void delete(String itemId, Client client);
 
-    void checkout(User user);
+    void checkout(Client client);
 
 }

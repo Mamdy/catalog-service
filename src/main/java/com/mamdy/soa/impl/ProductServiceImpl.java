@@ -153,14 +153,14 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void decreaseStock(String productId, int amount) {
-		Product productInfo = findOne(productId);
-		if (productInfo == null) throw new MyException(ResultEnum.PRODUCT_NOT_EXIST);
+		Product product = findOne(productId);
+		if (product == null) throw new MyException(ResultEnum.PRODUCT_NOT_EXIST);
 
-		int update = productInfo.getProductStock() - amount;
+		int update = product.getProductStock() - amount;
 		if (update <= 0) throw new MyException(ResultEnum.PRODUCT_NOT_ENOUGH);
 
-		productInfo.setProductStock(update);
-		productRepository.save(productInfo);
+		product.setProductStock(update);
+		productRepository.save(product);
 
 
 	}

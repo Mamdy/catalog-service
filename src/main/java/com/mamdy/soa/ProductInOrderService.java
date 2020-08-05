@@ -1,10 +1,10 @@
 package com.mamdy.soa;
 
+import com.mamdy.entites.Client;
 import com.mamdy.entites.ProductInOrder;
-import com.mamdy.entites.User;
 
 public interface ProductInOrderService {
-    void update(String itemId, Integer quantity, User user);
+    void update(String itemId, Integer quantity, Client client);
 
-    ProductInOrder findOne(String itemId, User user);
+    ProductInOrder findOne(String itemId, Client client);
 }

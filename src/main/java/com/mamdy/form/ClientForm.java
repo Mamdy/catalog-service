@@ -5,9 +5,11 @@ import lombok.Data;
 @Data
 public class ClientForm {
     private String email;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String username;
-    private String adresse;
-    private String tel;
+    private String phone;
+    private String address;
+    private String role;
 
 }

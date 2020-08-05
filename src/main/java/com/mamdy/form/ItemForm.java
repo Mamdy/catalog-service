@@ -1,5 +1,6 @@
 package com.mamdy.form;
 
+import com.mamdy.entites.Client;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -13,4 +14,6 @@ public class ItemForm {
     private String productCode;
 
     private String connectedUsername;
+
+    private Client client;
 }

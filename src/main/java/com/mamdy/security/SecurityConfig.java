@@ -36,10 +36,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //j'utilise le token jwt
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/categories/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/products/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/order/**").permitAll();
         http.authorizeRequests().antMatchers("/categories/**").hasAnyAuthority("CUSTOMER", "ADMIN");
         http.authorizeRequests().antMatchers("/products/**").hasAnyAuthority("CUSTOMER", "ADMIN");
         http.authorizeRequests().antMatchers("/cart/add").permitAll();
         http.authorizeRequests().antMatchers("/cart/**").permitAll();
+        http.authorizeRequests().antMatchers("/order/**").permitAll();
+        //http.authorizeRequests().antMatchers("/order/**").authenticated();
+        http.authorizeRequests().antMatchers("/order/finish/**").permitAll();
+
 
         //        http.authorizeRequests().antMatchers(HttpMethod.GET,"/cart/**").permitAll();
 //        http.authorizeRequests().antMatchers(HttpMethod.GET,"/cart/add/**").permitAll();http.authorizeRequests().antMatchers("/categories/**").hasAuthority("ADMIN");

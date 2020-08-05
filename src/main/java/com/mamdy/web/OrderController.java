@@ -29,7 +29,7 @@ public class OrderController {
                                      Authentication authentication) {
         PageRequest request = PageRequest.of(page - 1, size);
         Page<OrderMain> orderPage;
-        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"))) {
+        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("CUSTOMER"))) {
             orderPage = orderService.findByBuyerEmail(authentication.getName(), request);
         } else {
             orderPage = orderService.findAll(request);
