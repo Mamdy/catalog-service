@@ -52,8 +52,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderMain findOne(Long orderId) {
-        OrderMain orderMain = orderRepository.findByOrderId(orderId);
+    public OrderMain findOne(String orderId) {
+        OrderMain orderMain = orderRepository.findById(orderId);
         if (orderMain == null) {
             throw new MyException(ResultEnum.ORDER_NOT_FOUND);
         }
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderMain finish(Long orderId) {
+    public OrderMain finish(String orderId) {
         OrderMain orderMain = findOne(orderId);
         if (!orderMain.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             throw new MyException(ResultEnum.ORDER_STATUS_ERROR);
@@ -69,11 +69,12 @@ public class OrderServiceImpl implements OrderService {
 
         orderMain.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
         orderRepository.save(orderMain);
-        return orderRepository.findByOrderId(orderId);
+        return orderRepository.findById(orderId);
     }
 
+
     @Override
-    public OrderMain cancel(Long orderId) {
+    public OrderMain cancel(String orderId) {
         OrderMain orderMain = findOne(orderId);
         if (!orderMain.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             throw new MyException(ResultEnum.ORDER_STATUS_ERROR);
@@ -90,6 +91,6 @@ public class OrderServiceImpl implements OrderService {
                 productService.increaseStock(productInOrder.getProductId(), productInOrder.getCount());
             }
         }
-        return orderRepository.findByOrderId(orderId);
+        return orderRepository.findById(orderId);
     }
 }

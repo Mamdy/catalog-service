@@ -7,6 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -26,7 +27,11 @@ import java.util.Set;
 public class OrderMain {
 
     @Id
-    private String orderId;
+    private String id;
+
+    @NotNull
+    @UniqueElements
+    private String numOrder;
 //
 //    @OneToMany(cascade = CascadeType.ALL,
 //            fetch = FetchType.LAZY,

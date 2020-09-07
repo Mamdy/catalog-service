@@ -13,11 +13,11 @@ public interface OrderService {
 
     Page<OrderMain> findByBuyerPhone(String phone, Pageable pageable);
 
-    OrderMain findOne(Long orderId);
+    OrderMain findOne(String orderId);
 
-    OrderMain finish(Long orderId);
+    OrderMain finish(String orderId);
 
-    OrderMain cancel(Long orderId);
+    OrderMain cancel(String orderId);
 
 
 }

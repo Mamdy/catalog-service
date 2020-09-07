@@ -86,6 +86,8 @@ public class CartServiceImpl implements CartService {
         // Creation d'une commande
         OrderMain order = new OrderMain(client);
         order.setCreateTime(LocalDateTime.now());
+        order.setProducts(client.getCart().getProductsInOrder());
+
         order = orderRepository.save(order);
         for (ProductInOrder productInOrder : client.getCart().getProductsInOrder()) {
             productInOrder.setCart(null);

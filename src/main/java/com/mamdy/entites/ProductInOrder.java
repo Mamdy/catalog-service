@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -33,10 +30,11 @@ public class ProductInOrder {
     @DBRef
     private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orderId")
-    @JsonIgnore
-    private OrderMain orderMain;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id")
+@DBRef
+@JsonIgnore
+private OrderMain orderMain;
 
     private String productCode;
 

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface OrderRepository extends MongoRepository<OrderMain, Long> {
 
-    OrderMain findByOrderId(Long orderId);
+    OrderMain findById(String id);
 
     Page<OrderMain> findAllByOrderStatusOrderByCreateTimeDesc(Integer orderStatus, Pageable pageable);
 

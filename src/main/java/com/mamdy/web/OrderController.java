@@ -39,9 +39,9 @@ public class OrderController {
 
 
     @PatchMapping("/order/cancel/{id}")
-    public ResponseEntity<OrderMain> cancel(@PathVariable("id") Long orderId, Authentication authentication) {
+    public ResponseEntity<OrderMain> cancel(@PathVariable("id") String orderId, Authentication authentication) {
         OrderMain orderMain = orderService.findOne(orderId);
-        if (!authentication.getName().equals(orderMain.getBuyerEmail()) && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"))) {
+        if (!authentication.getName().equals(orderMain.getBuyerEmail()) && authentication.getAuthorities().contains(new SimpleGrantedAuthority("CUSTOMER"))) {
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -49,16 +49,16 @@ public class OrderController {
     }
 
     @PatchMapping("/order/finish/{id}")
-    public ResponseEntity<OrderMain> finish(@PathVariable("id") Long orderId, Authentication authentication) {
-        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"))) {
+    public ResponseEntity<OrderMain> finish(@PathVariable("id") String orderId, Authentication authentication) {
+        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("CUSTOMER"))) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return ResponseEntity.ok(orderService.finish(orderId));
     }
 
     @GetMapping("/order/{id}")
-    public ResponseEntity show(@PathVariable("id") Long orderId, Authentication authentication) {
-        boolean isCustomer = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+    public ResponseEntity show(@PathVariable("id") String orderId, Authentication authentication) {
+        boolean isCustomer = authentication.getAuthorities().contains(new SimpleGrantedAuthority("CUSTOMER"));
         OrderMain orderMain = orderService.findOne(orderId);
         if (isCustomer && !authentication.getName().equals(orderMain.getBuyerEmail())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
