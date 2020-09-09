@@ -42,10 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/cart/add").permitAll();
         http.authorizeRequests().antMatchers("/cart/**").permitAll();
         http.authorizeRequests().antMatchers("/order/**").permitAll();
-        http.authorizeRequests().antMatchers("/payment/paymentintent/**").permitAll();
-        http.authorizeRequests().antMatchers("/payment/confirm/**").permitAll();
+        http.authorizeRequests().antMatchers("/payment/paymentintent/**").hasAnyAuthority("CUSTOMER");
+        http.authorizeRequests().antMatchers("/payment/confirm/**").hasAnyAuthority("CUSTOMER");
         //http.authorizeRequests().antMatchers("/order/**").authenticated();
-        http.authorizeRequests().antMatchers("/order/finish/**").permitAll();
+        http.authorizeRequests().antMatchers("/order/finish/**").hasAnyAuthority("CUSTOMER", "ADMIN");
 
 
         //        http.authorizeRequests().antMatchers(HttpMethod.GET,"/cart/**").permitAll();
