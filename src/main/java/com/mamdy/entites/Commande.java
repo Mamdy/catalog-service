@@ -28,6 +28,4 @@ public class Commande {
     @DBRef
     private Client client;
 
-    @OneToOne
-    private Payment payment;
 }
