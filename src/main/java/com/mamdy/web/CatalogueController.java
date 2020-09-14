@@ -13,6 +13,8 @@ import com.mamdy.utils.Response;
 import lombok.Data;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -174,7 +176,17 @@ public class CatalogueController {
 		return null;
 
 	}
-	
+
+
+	@GetMapping(value = "/searchKeyWord")
+	public Page<Product> searchProductByKeyWord(@RequestParam("keyword") String keyword,
+												@RequestParam(value = "page", defaultValue = "1") Integer page,
+												@RequestParam(value = "size", defaultValue = "10") Integer size) {
+		PageRequest request = PageRequest.of(page - 1, size);
+		Page<Product> productPage = productRepository.findByNameContaining(keyword, request);
+
+		return productPage;
+	}
 
 
 	/*@PostMapping("/saveProduct")

@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.util.List;
 import java.util.Optional;
 
 //import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +17,10 @@ import java.util.Optional;
 public interface ProductRepository extends MongoRepository<Product, String> {
     @Query("{ 'name' : ?0 }")
     Product findByName(String name);
+
+    Page<Product> findByNameContaining(String name, Pageable pageable);
+
+    List<Product> findByNameLike(String name);
     //Product saveProduct(@Param("product") Product product, String categoryId);
     //Product saveProduct(Product product,String categoryName);
 
