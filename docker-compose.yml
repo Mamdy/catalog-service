@@ -1,0 +1,47 @@
+version: "3"
+services:
+  api-database:
+    image: mongo:3.2.4
+    ports:
+      - "27018:27017"
+    container_name: api-database
+    command: --smallfiles
+#  mongo-init:
+#    build: ./mongo-init
+#    links:
+#      - mongo
+#
+#  mongo-client:
+#    image: mongoclient/mongoclient
+#    ports:
+#      - 3030:3000
+#    environment:
+#      - MONGOCLIENT_DEFAULT_CONNECTION_URL=mongodb://mongo:27017
+#    links:
+#      - mongo
+#
+#    volumes:
+#      - ./data/db:/data/db
+#    networks:
+#      - shared-net
+  # APP  ***************************************************************************************
+  springbot-app:
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile
+    image: catalogue-api
+    container_name: catalogue-api
+    ports:
+    - "8087:8080"
+    links:
+      - api-database
+#    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar product-app.jar"
+#    depends_on:
+#      - mongo
+#    networks:
+#      - shared-net
+#networks:
+#  shared-net:
+#    driver: bridge
+
+

@@ -43,7 +43,11 @@ public class CartServiceImpl implements CartService {
     public void mergeLocalCart(Collection<ProductInOrder> productInOrders, Client client) {
         Cart finalCart = client.getCart();
         productInOrders.forEach(productInOrder -> {
+
             Set<ProductInOrder> set = finalCart.getProductsInOrder();
+            set.forEach(p->{
+                System.out.println(p.getProductId());
+            });
             Optional<ProductInOrder> old = set.stream().filter(e -> e.getProductId().equals(productInOrder.getProductId())).findFirst();
             ProductInOrder prod;
             if (old.isPresent()) {
@@ -78,12 +82,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void checkout(Client client) {
-//        LocalDateTime now = LocalDateTime.now();
-//        System.out.println("Before Formatting: " + now);
-//        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//        String formatDateTime = now.format(format);
-//        System.out.println("After Formatting: " + formatDateTime);
-        // Creation d'une commande
+
         OrderMain order = new OrderMain(client);
         order.setCreateTime(LocalDateTime.now());
         order.setProducts(client.getCart().getProductsInOrder());
@@ -92,7 +91,7 @@ public class CartServiceImpl implements CartService {
         for (ProductInOrder productInOrder : client.getCart().getProductsInOrder()) {
             productInOrder.setCart(null);
             productInOrder.setOrderMain(order);
-            productService.decreaseStock(productInOrder.getProductId(), productInOrder.getCount());
+            productService.decreaseStock(productInOrder.getId(), productInOrder.getCount());
             productInOrderRepository.save(productInOrder);
 
         }

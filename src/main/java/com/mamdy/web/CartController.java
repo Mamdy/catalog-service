@@ -47,16 +47,17 @@ public class CartController {
 
     @Autowired
     CartRepository cartRepository;
+    //public ResponseEntity<Cart> mergeCart(@RequestBody Collection<ProductInOrder> productInOrders, Client client, Principal principal)
 
     @PostMapping("")
-    public ResponseEntity<Cart> mergeCart(@RequestBody Collection<ProductInOrder> productInOrders, Client client, Principal principal) {
+    public ResponseEntity<Cart> mergeCart(@RequestBody ItemForm itemFormData, Principal principal) {
         //si authentification est reussi on genere le token
         // User user1 = new User(userDetails.getUsername(),userDetails.getPassword());
         //        Client newCustomer = clientRepository.findByUsername(principal.getName().toLowerCase());
-        ;
-        Client newCustomer = clientRepository.findByUsername(client.getUsername());
+
+        Client newCustomer = clientRepository.findByUsername(itemFormData.getClient().getUsername());
         if (newCustomer == null) {
-            newCustomer = clientRepository.save(client);
+            newCustomer = clientRepository.save(itemFormData.getClient());
             if (newCustomer.getEmail().equalsIgnoreCase(principal.getName()) && newCustomer.getCart() == null) {
 
                 Cart cart = new Cart();
@@ -64,7 +65,7 @@ public class CartController {
                 cart.setClient(newCustomer);
                 cart = cartRepository.save(cart);
 
-                client.setCart(cart);
+                newCustomer.setCart(cart);
                 clientRepository.save(newCustomer);
 
             }
@@ -73,13 +74,35 @@ public class CartController {
 
 
         try {
-            cartService.mergeLocalCart(productInOrders, newCustomer);
+            cartService.mergeLocalCart(itemFormData.getLocalCartProductsInOrder(), newCustomer);
         } catch (Exception e) {
             ResponseEntity.badRequest().body("Merge Cart Failed");
         }
-        return ResponseEntity.ok(cartService.getCart(client));
+        return ResponseEntity.ok(cartService.getCart(newCustomer));
     }
 
+//    private Cart mergCart(Collection<ProductInOrder> productInOrders, Client client, Principal principal){
+//        Client newCustomer = clientRepository.findByUsername(client.getUsername());
+//        if (newCustomer == null) {
+//            newCustomer = clientRepository.save(client);
+//            if (newCustomer.getEmail().equalsIgnoreCase(principal.getName()) && newCustomer.getCart() == null) {
+//
+//                Cart cart = new Cart();
+//                cart.setProductsInOrder(new HashSet<>());
+//                cart.setClient(newCustomer);
+//                cart = cartRepository.save(cart);
+//
+//                newCustomer.setCart(cart);
+//                clientRepository.save(newCustomer);
+//
+//            }
+//        }
+//
+//        cartService.mergeLocalCart(productInOrders, newCustomer);
+//
+//
+//        return  cartService.getCart(newCustomer);
+//    }
     @GetMapping("")
     public Set<ProductInOrder> getCart(Principal principal) {
         Client client = clientRepository.findByUsername(principal.getName().toLowerCase());
@@ -92,7 +115,13 @@ public class CartController {
         Product productInfo;
         productInfo = productService.findByCode(dataFromform.getProductCode());
         try {
-            mergeCart(Collections.singleton(new ProductInOrder(productInfo, dataFromform.getQuantity())), dataFromform.getClient(), principal);
+
+            //mergeCart(Collections.singleton(new ProductInOrder(productInfo, dataFromform.getQuantity())), dataFromform.getClient(), principal);
+            ProductInOrder productInOrder = new ProductInOrder(productInfo, dataFromform.getQuantity());
+            dataFromform.setLocalCartProductsInOrder(Collections.singleton(productInOrder));
+            mergeCart(dataFromform,principal);
+//            dataFromform.getProductInOrders().add(productInOrder);
+//            mergCart(dataFromform.getProductInOrders(), dataFromform.getClient(), principal);
         } catch (Exception e) {
             log.info(e.getMessage().toString());
             return false;

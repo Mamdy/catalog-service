@@ -1,10 +1,12 @@
 package com.mamdy.form;
 
 import com.mamdy.entites.Client;
+import com.mamdy.entites.ProductInOrder;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import java.util.Collection;
 
 @Data
 public class ItemForm {
@@ -16,4 +18,6 @@ public class ItemForm {
     private String connectedUsername;
 
     private Client client;
+
+    private Collection<ProductInOrder> localCartProductsInOrder;
 }
