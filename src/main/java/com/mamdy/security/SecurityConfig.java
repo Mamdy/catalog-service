@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         //j'utilise le token jwt
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/apiTest/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/categories/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/products/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/order/**").permitAll();
