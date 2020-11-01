@@ -1,0 +1,775 @@
+INFO    2020-11-01 10:07:46,077 [background-preinit] org.hibernate.validator.internal.util.Version [] [] - HV000001: Hibernate Validator 6.1.1.Final
+INFO    2020-11-01 10:07:46,727 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Starting CatalogServiceApplication on kubernetes-master with PID 17209 (/home/mamdy/Bureau/_DVT/Workspaces/catalog-service/target/classes started by mamdy in /home/mamdy/Bureau/_DVT/Workspaces/catalog-service)
+INFO    2020-11-01 10:07:46,734 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - No active profile set, falling back to default profiles: default
+INFO    2020-11-01 10:07:46,944 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO    2020-11-01 10:07:46,948 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO    2020-11-01 10:07:48,669 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Bootstrapping Spring Data repositories in DEFAULT mode.
+INFO    2020-11-01 10:07:48,845 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Finished Spring Data repository scanning in 167ms. Found 10 repository interfaces.
+INFO    2020-11-01 10:07:49,486 [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] [] - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$4c87b00e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO    2020-11-01 10:07:50,475 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat initialized with port(s): 8080 (http)
+INFO    2020-11-01 10:07:50,743 [restartedMain] org.springframework.web.context.ContextLoader [] [] - Root WebApplicationContext: initialization completed in 3794 ms
+WARN    2020-11-01 10:07:51,269 [restartedMain] org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [] [] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'paymentService': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'stripe.key.secret' in value "${stripe.key.secret}"
+INFO    2020-11-01 10:07:51,296 [restartedMain] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [] [] - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+ERROR   2020-11-01 10:07:51,299 [restartedMain] org.springframework.boot.SpringApplication [] [] - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'paymentService': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'stripe.key.secret' in value "${stripe.key.secret}"
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:380)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1411)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:592)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:849)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:142)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.mamdy.CatalogServiceApplication.main(CatalogServiceApplication.java:23)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'stripe.key.secret' in value "${stripe.key.secret}"
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:172)
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:124)
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:237)
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:211)
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:175)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:851)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1188)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1167)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:593)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:374)
+	... 22 more
+INFO    2020-11-01 10:09:29,441 [background-preinit] org.hibernate.validator.internal.util.Version [] [] - HV000001: Hibernate Validator 6.1.1.Final
+INFO    2020-11-01 10:09:30,705 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Starting CatalogServiceApplication on kubernetes-master with PID 18548 (/home/mamdy/Bureau/_DVT/Workspaces/catalog-service/target/classes started by mamdy in /home/mamdy/Bureau/_DVT/Workspaces/catalog-service)
+INFO    2020-11-01 10:09:30,706 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - No active profile set, falling back to default profiles: default
+INFO    2020-11-01 10:09:30,767 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO    2020-11-01 10:09:30,767 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO    2020-11-01 10:09:31,907 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Bootstrapping Spring Data repositories in DEFAULT mode.
+INFO    2020-11-01 10:09:32,061 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Finished Spring Data repository scanning in 148ms. Found 10 repository interfaces.
+INFO    2020-11-01 10:09:32,698 [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] [] - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$2b3d9999] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO    2020-11-01 10:09:33,436 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat initialized with port(s): 8080 (http)
+INFO    2020-11-01 10:09:33,757 [restartedMain] org.springframework.web.context.ContextLoader [] [] - Root WebApplicationContext: initialization completed in 2990 ms
+WARN    2020-11-01 10:09:34,414 [restartedMain] org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [] [] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'paymentService': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'stripe.key.secret' in value "${stripe.key.secret}"
+INFO    2020-11-01 10:09:34,440 [restartedMain] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [] [] - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+ERROR   2020-11-01 10:09:34,443 [restartedMain] org.springframework.boot.SpringApplication [] [] - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'paymentService': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'stripe.key.secret' in value "${stripe.key.secret}"
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:380)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1411)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:592)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:849)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:142)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.mamdy.CatalogServiceApplication.main(CatalogServiceApplication.java:23)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'stripe.key.secret' in value "${stripe.key.secret}"
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:172)
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:124)
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:237)
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:211)
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:175)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:851)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1188)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1167)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:593)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:374)
+	... 22 more
+INFO    2020-11-01 10:12:06,225 [background-preinit] org.hibernate.validator.internal.util.Version [] [] - HV000001: Hibernate Validator 6.1.1.Final
+INFO    2020-11-01 10:12:06,515 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Starting CatalogServiceApplication on kubernetes-master with PID 20441 (/home/mamdy/Bureau/_DVT/Workspaces/catalog-service/target/classes started by mamdy in /home/mamdy/Bureau/_DVT/Workspaces/catalog-service)
+INFO    2020-11-01 10:12:06,516 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - No active profile set, falling back to default profiles: default
+INFO    2020-11-01 10:12:06,666 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO    2020-11-01 10:12:06,666 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO    2020-11-01 10:12:08,545 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Bootstrapping Spring Data repositories in DEFAULT mode.
+INFO    2020-11-01 10:12:08,714 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Finished Spring Data repository scanning in 162ms. Found 10 repository interfaces.
+INFO    2020-11-01 10:12:09,361 [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] [] - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$72f568c5] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO    2020-11-01 10:12:10,131 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat initialized with port(s): 8087 (http)
+INFO    2020-11-01 10:12:10,520 [restartedMain] org.springframework.web.context.ContextLoader [] [] - Root WebApplicationContext: initialization completed in 3854 ms
+INFO    2020-11-01 10:12:11,417 [restartedMain] org.mongodb.driver.cluster [] [] - Cluster created with settings {hosts=[mongo:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+INFO    2020-11-01 10:12:11,462 [cluster-ClusterId{value='5f9e7beb6ffcfa4fd9abab35', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo: Nom ou service inconnu
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo: Nom ou service inconnu
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:12:11,911 [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [] [] - LiveReload server is running on port 35729
+INFO    2020-11-01 10:12:12,084 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field '_id' in type 'Payment' for path 'payment -> commande -> payment'
+INFO    2020-11-01 10:12:12,086 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field 'commande' in type 'Payment' for path 'payment -> commande -> payment'
+INFO    2020-11-01 10:12:12,091 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field '_id' in type 'Commande' for path 'commande -> payment -> commande'
+INFO    2020-11-01 10:12:12,091 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field 'payment' in type 'Commande' for path 'commande -> payment -> commande'
+INFO    2020-11-01 10:12:13,059 [restartedMain] org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration [] [] - 
+
+Using generated security password: 407798cd-238c-4715-aa8e-c3583a47d1eb
+
+INFO    2020-11-01 10:12:13,261 [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain [] [] - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@32f5d453, org.springframework.security.web.context.SecurityContextPersistenceFilter@2fe9167d, org.springframework.security.web.header.HeaderWriterFilter@1496b9ec, org.springframework.security.web.authentication.logout.LogoutFilter@4e6a5c03, com.mamdy.security.JWTAuthorizationFilter@bafdc27, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6dd75e31, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6c75078e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5737f050, org.springframework.security.web.session.SessionManagementFilter@1181a41f, org.springframework.security.web.access.ExceptionTranslationFilter@2bf6f90b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@d40172b]
+INFO    2020-11-01 10:12:13,627 [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor [] [] - Initializing ExecutorService 'applicationTaskExecutor'
+INFO    2020-11-01 10:12:14,535 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat started on port(s): 8087 (http) with context path ''
+INFO    2020-11-01 10:12:14,539 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Started CatalogServiceApplication in 8.646 seconds (JVM running for 9.499)
+INFO    2020-11-01 10:12:14,584 [restartedMain] org.mongodb.driver.cluster [] [] - Cluster description not yet available. Waiting for 30000 ms before timing out
+INFO    2020-11-01 10:12:14,585 [cluster-ClusterId{value='5f9e7beb6ffcfa4fd9abab35', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1281)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:12:21,593 [cluster-ClusterId{value='5f9e7beb6ffcfa4fd9abab35', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo: Nom ou service inconnu
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo: Nom ou service inconnu
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:12:22,094 [cluster-ClusterId{value='5f9e7beb6ffcfa4fd9abab35', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1281)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:12:31,605 [cluster-ClusterId{value='5f9e7beb6ffcfa4fd9abab35', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo: Nom ou service inconnu
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo: Nom ou service inconnu
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:12:32,106 [cluster-ClusterId{value='5f9e7beb6ffcfa4fd9abab35', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1281)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:12:41,612 [cluster-ClusterId{value='5f9e7beb6ffcfa4fd9abab35', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo: Nom ou service inconnu
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo: Nom ou service inconnu
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:12:42,113 [cluster-ClusterId{value='5f9e7beb6ffcfa4fd9abab35', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1281)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:12:44,591 [restartedMain] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [] [] - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+ERROR   2020-11-01 10:12:44,594 [restartedMain] org.springframework.boot.SpringApplication [] [] - Application run failed
+java.lang.IllegalStateException: Failed to execute CommandLineRunner
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:816)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:797)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.mamdy.CatalogServiceApplication.main(CatalogServiceApplication.java:23)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.springframework.dao.DataAccessResourceFailureException: Timed out after 30000 ms while waiting to connect. Client view of cluster state is {type=UNKNOWN, servers=[{address=mongo:27017, type=UNKNOWN, state=CONNECTING, exception={com.mongodb.MongoSocketException: mongo}, caused by {java.net.UnknownHostException: mongo}}]; nested exception is com.mongodb.MongoTimeoutException: Timed out after 30000 ms while waiting to connect. Client view of cluster state is {type=UNKNOWN, servers=[{address=mongo:27017, type=UNKNOWN, state=CONNECTING, exception={com.mongodb.MongoSocketException: mongo}, caused by {java.net.UnknownHostException: mongo}}]
+	at org.springframework.data.mongodb.core.MongoExceptionTranslator.translateExceptionIfPossible(MongoExceptionTranslator.java:90)
+	at org.springframework.data.mongodb.core.MongoTemplate.potentiallyConvertRuntimeException(MongoTemplate.java:2781)
+	at org.springframework.data.mongodb.core.MongoTemplate.execute(MongoTemplate.java:547)
+	at org.springframework.data.mongodb.core.MongoTemplate.doRemove(MongoTemplate.java:1689)
+	at org.springframework.data.mongodb.core.MongoTemplate.remove(MongoTemplate.java:1665)
+	at org.springframework.data.mongodb.repository.support.SimpleMongoRepository.deleteAll(SimpleMongoRepository.java:185)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:359)
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:200)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:644)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:608)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.lambda$invoke$3(RepositoryFactorySupport.java:595)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:595)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:59)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:93)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:61)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy116.deleteAll(Unknown Source)
+	at com.mamdy.CatalogServiceApplication.lambda$start$4(CatalogServiceApplication.java:32)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:813)
+	... 10 more
+Caused by: com.mongodb.MongoTimeoutException: Timed out after 30000 ms while waiting to connect. Client view of cluster state is {type=UNKNOWN, servers=[{address=mongo:27017, type=UNKNOWN, state=CONNECTING, exception={com.mongodb.MongoSocketException: mongo}, caused by {java.net.UnknownHostException: mongo}}]
+	at com.mongodb.internal.connection.BaseCluster.getDescription(BaseCluster.java:179)
+	at com.mongodb.internal.connection.SingleServerCluster.getDescription(SingleServerCluster.java:41)
+	at com.mongodb.client.internal.MongoClientDelegate.getConnectedClusterDescription(MongoClientDelegate.java:136)
+	at com.mongodb.client.internal.MongoClientDelegate.createClientSession(MongoClientDelegate.java:94)
+	at com.mongodb.client.internal.MongoClientDelegate$DelegateOperationExecutor.getClientSession(MongoClientDelegate.java:249)
+	at com.mongodb.client.internal.MongoClientDelegate$DelegateOperationExecutor.execute(MongoClientDelegate.java:190)
+	at com.mongodb.client.internal.MongoCollectionImpl.executeSingleWriteRequest(MongoCollectionImpl.java:960)
+	at com.mongodb.client.internal.MongoCollectionImpl.executeDelete(MongoCollectionImpl.java:940)
+	at com.mongodb.client.internal.MongoCollectionImpl.deleteMany(MongoCollectionImpl.java:551)
+	at org.springframework.data.mongodb.core.MongoTemplate$9.doInCollection(MongoTemplate.java:1729)
+	at org.springframework.data.mongodb.core.MongoTemplate$9.doInCollection(MongoTemplate.java:1689)
+	at org.springframework.data.mongodb.core.MongoTemplate.execute(MongoTemplate.java:545)
+	... 35 more
+INFO    2020-11-01 10:12:44,604 [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor [] [] - Shutting down ExecutorService 'applicationTaskExecutor'
+INFO    2020-11-01 10:14:05,235 [background-preinit] org.hibernate.validator.internal.util.Version [] [] - HV000001: Hibernate Validator 6.1.1.Final
+INFO    2020-11-01 10:14:05,613 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Starting CatalogServiceApplication on kubernetes-master with PID 21887 (/home/mamdy/Bureau/_DVT/Workspaces/catalog-service/target/classes started by mamdy in /home/mamdy/Bureau/_DVT/Workspaces/catalog-service)
+INFO    2020-11-01 10:14:05,626 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - No active profile set, falling back to default profiles: default
+INFO    2020-11-01 10:14:05,726 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO    2020-11-01 10:14:05,727 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO    2020-11-01 10:14:07,529 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Bootstrapping Spring Data repositories in DEFAULT mode.
+INFO    2020-11-01 10:14:07,706 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Finished Spring Data repository scanning in 170ms. Found 10 repository interfaces.
+INFO    2020-11-01 10:14:08,378 [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] [] - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$bde8e6ce] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO    2020-11-01 10:14:09,152 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat initialized with port(s): 8087 (http)
+INFO    2020-11-01 10:14:09,432 [restartedMain] org.springframework.web.context.ContextLoader [] [] - Root WebApplicationContext: initialization completed in 3704 ms
+INFO    2020-11-01 10:14:10,260 [restartedMain] org.mongodb.driver.cluster [] [] - Cluster created with settings {hosts=[mongo:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+INFO    2020-11-01 10:14:10,315 [cluster-ClusterId{value='5f9e7c626ffcfa557f5aa57d', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo: Nom ou service inconnu
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo: Nom ou service inconnu
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:14:10,680 [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [] [] - LiveReload server is running on port 35729
+INFO    2020-11-01 10:14:10,832 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field '_id' in type 'Payment' for path 'payment -> commande -> payment'
+INFO    2020-11-01 10:14:10,835 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field 'commande' in type 'Payment' for path 'payment -> commande -> payment'
+INFO    2020-11-01 10:14:10,838 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field '_id' in type 'Commande' for path 'commande -> payment -> commande'
+INFO    2020-11-01 10:14:10,842 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field 'payment' in type 'Commande' for path 'commande -> payment -> commande'
+INFO    2020-11-01 10:14:11,755 [restartedMain] org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration [] [] - 
+
+Using generated security password: 70236f50-c0bb-4cbe-9c7a-08938ccc5b2e
+
+INFO    2020-11-01 10:14:11,962 [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain [] [] - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3fa734e7, org.springframework.security.web.context.SecurityContextPersistenceFilter@502b5843, org.springframework.security.web.header.HeaderWriterFilter@721d676f, org.springframework.security.web.authentication.logout.LogoutFilter@6192d59, com.mamdy.security.JWTAuthorizationFilter@5d985513, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@631ad7e8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4514b672, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@525d7be4, org.springframework.security.web.session.SessionManagementFilter@5b0a352a, org.springframework.security.web.access.ExceptionTranslationFilter@77a4e7e2, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@336d42d3]
+INFO    2020-11-01 10:14:12,323 [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor [] [] - Initializing ExecutorService 'applicationTaskExecutor'
+INFO    2020-11-01 10:14:13,168 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat started on port(s): 8087 (http) with context path ''
+INFO    2020-11-01 10:14:13,173 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Started CatalogServiceApplication in 8.243 seconds (JVM running for 8.994)
+INFO    2020-11-01 10:14:13,208 [restartedMain] org.mongodb.driver.cluster [] [] - Cluster description not yet available. Waiting for 30000 ms before timing out
+INFO    2020-11-01 10:14:13,208 [cluster-ClusterId{value='5f9e7c626ffcfa557f5aa57d', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1281)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:14:20,715 [cluster-ClusterId{value='5f9e7c626ffcfa557f5aa57d', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo: Nom ou service inconnu
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo: Nom ou service inconnu
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:14:21,217 [cluster-ClusterId{value='5f9e7c626ffcfa557f5aa57d', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1281)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:14:22,557 [Thread-5] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor [] [] - Shutting down ExecutorService 'applicationTaskExecutor'
+INFO    2020-11-01 10:14:23,162 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO    2020-11-01 10:14:23,163 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO    2020-11-01 10:14:28,192 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Starting CatalogServiceApplication on kubernetes-master with PID 21887 (started by mamdy in /home/mamdy/Bureau/_DVT/Workspaces/catalog-service)
+INFO    2020-11-01 10:14:28,192 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - No active profile set, falling back to default profiles: default
+INFO    2020-11-01 10:14:28,706 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Bootstrapping Spring Data repositories in DEFAULT mode.
+INFO    2020-11-01 10:14:28,708 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Finished Spring Data repository scanning in 2ms. Found 0 repository interfaces.
+INFO    2020-11-01 10:14:28,861 [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] [] - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$bde8e6ce] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO    2020-11-01 10:14:29,049 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat initialized with port(s): 8080 (http)
+INFO    2020-11-01 10:14:29,078 [restartedMain] org.springframework.web.context.ContextLoader [] [] - Root WebApplicationContext: initialization completed in 884 ms
+WARN    2020-11-01 10:14:29,251 [restartedMain] org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [] [] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'start' defined in com.mamdy.CatalogServiceApplication: Unsatisfied dependency expressed through method 'start' parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.mamdy.dao.CategoryRepository' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+INFO    2020-11-01 10:14:29,278 [restartedMain] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [] [] - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+ERROR   2020-11-01 10:14:29,493 [restartedMain] org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [] [] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of method start in com.mamdy.CatalogServiceApplication required a bean of type 'com.mamdy.dao.CategoryRepository' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.mamdy.dao.CategoryRepository' in your configuration.
+
+INFO    2020-11-01 10:14:43,209 [restartedMain] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [] [] - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+ERROR   2020-11-01 10:14:43,218 [restartedMain] org.springframework.boot.SpringApplication [] [] - Application run failed
+java.lang.IllegalStateException: Failed to execute CommandLineRunner
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:816)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:797)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.mamdy.CatalogServiceApplication.main(CatalogServiceApplication.java:23)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.springframework.dao.DataAccessResourceFailureException: Timed out after 30000 ms while waiting to connect. Client view of cluster state is {type=UNKNOWN, servers=[{address=mongo:27017, type=UNKNOWN, state=CONNECTING, exception={com.mongodb.MongoSocketException: mongo}, caused by {java.net.UnknownHostException: mongo}}]; nested exception is com.mongodb.MongoTimeoutException: Timed out after 30000 ms while waiting to connect. Client view of cluster state is {type=UNKNOWN, servers=[{address=mongo:27017, type=UNKNOWN, state=CONNECTING, exception={com.mongodb.MongoSocketException: mongo}, caused by {java.net.UnknownHostException: mongo}}]
+	at org.springframework.data.mongodb.core.MongoExceptionTranslator.translateExceptionIfPossible(MongoExceptionTranslator.java:90)
+	at org.springframework.data.mongodb.core.MongoTemplate.potentiallyConvertRuntimeException(MongoTemplate.java:2781)
+	at org.springframework.data.mongodb.core.MongoTemplate.execute(MongoTemplate.java:547)
+	at org.springframework.data.mongodb.core.MongoTemplate.doRemove(MongoTemplate.java:1689)
+	at org.springframework.data.mongodb.core.MongoTemplate.remove(MongoTemplate.java:1665)
+	at org.springframework.data.mongodb.repository.support.SimpleMongoRepository.deleteAll(SimpleMongoRepository.java:185)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:359)
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:200)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:644)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:608)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.lambda$invoke$3(RepositoryFactorySupport.java:595)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:595)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:59)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:93)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:61)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy116.deleteAll(Unknown Source)
+	at com.mamdy.CatalogServiceApplication.lambda$start$4(CatalogServiceApplication.java:32)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:813)
+	... 10 more
+Caused by: com.mongodb.MongoTimeoutException: Timed out after 30000 ms while waiting to connect. Client view of cluster state is {type=UNKNOWN, servers=[{address=mongo:27017, type=UNKNOWN, state=CONNECTING, exception={com.mongodb.MongoSocketException: mongo}, caused by {java.net.UnknownHostException: mongo}}]
+	at com.mongodb.internal.connection.BaseCluster.getDescription(BaseCluster.java:179)
+	at com.mongodb.internal.connection.SingleServerCluster.getDescription(SingleServerCluster.java:41)
+	at com.mongodb.client.internal.MongoClientDelegate.getConnectedClusterDescription(MongoClientDelegate.java:136)
+	at com.mongodb.client.internal.MongoClientDelegate.createClientSession(MongoClientDelegate.java:94)
+	at com.mongodb.client.internal.MongoClientDelegate$DelegateOperationExecutor.getClientSession(MongoClientDelegate.java:249)
+	at com.mongodb.client.internal.MongoClientDelegate$DelegateOperationExecutor.execute(MongoClientDelegate.java:190)
+	at com.mongodb.client.internal.MongoCollectionImpl.executeSingleWriteRequest(MongoCollectionImpl.java:960)
+	at com.mongodb.client.internal.MongoCollectionImpl.executeDelete(MongoCollectionImpl.java:940)
+	at com.mongodb.client.internal.MongoCollectionImpl.deleteMany(MongoCollectionImpl.java:551)
+	at org.springframework.data.mongodb.core.MongoTemplate$9.doInCollection(MongoTemplate.java:1729)
+	at org.springframework.data.mongodb.core.MongoTemplate$9.doInCollection(MongoTemplate.java:1689)
+	at org.springframework.data.mongodb.core.MongoTemplate.execute(MongoTemplate.java:545)
+	... 35 more
+INFO    2020-11-01 10:18:43,048 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO    2020-11-01 10:18:43,048 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO    2020-11-01 10:18:43,079 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Starting CatalogServiceApplication on kubernetes-master with PID 21887 (/home/mamdy/Bureau/_DVT/Workspaces/catalog-service/target/classes started by mamdy in /home/mamdy/Bureau/_DVT/Workspaces/catalog-service)
+INFO    2020-11-01 10:18:43,080 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - No active profile set, falling back to default profiles: default
+INFO    2020-11-01 10:18:43,557 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Bootstrapping Spring Data repositories in DEFAULT mode.
+INFO    2020-11-01 10:18:43,559 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Finished Spring Data repository scanning in 1ms. Found 0 repository interfaces.
+INFO    2020-11-01 10:18:43,717 [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] [] - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$bde8e6ce] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO    2020-11-01 10:18:43,866 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat initialized with port(s): 8087 (http)
+INFO    2020-11-01 10:18:43,905 [restartedMain] org.springframework.web.context.ContextLoader [] [] - Root WebApplicationContext: initialization completed in 823 ms
+WARN    2020-11-01 10:18:44,304 [restartedMain] org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [] [] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'start' defined in com.mamdy.CatalogServiceApplication: Unsatisfied dependency expressed through method 'start' parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.mamdy.dao.CategoryRepository' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+INFO    2020-11-01 10:18:44,334 [restartedMain] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [] [] - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+ERROR   2020-11-01 10:18:44,714 [restartedMain] org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [] [] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of method start in com.mamdy.CatalogServiceApplication required a bean of type 'com.mamdy.dao.CategoryRepository' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.mamdy.dao.CategoryRepository' in your configuration.
+
+INFO    2020-11-01 10:19:28,929 [background-preinit] org.hibernate.validator.internal.util.Version [] [] - HV000001: Hibernate Validator 6.1.1.Final
+INFO    2020-11-01 10:19:29,467 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Starting CatalogServiceApplication on kubernetes-master with PID 25687 (/home/mamdy/Bureau/_DVT/Workspaces/catalog-service/target/classes started by mamdy in /home/mamdy/Bureau/_DVT/Workspaces/catalog-service)
+INFO    2020-11-01 10:19:29,469 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - No active profile set, falling back to default profiles: default
+INFO    2020-11-01 10:19:29,597 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO    2020-11-01 10:19:29,597 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO    2020-11-01 10:19:30,997 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Bootstrapping Spring Data repositories in DEFAULT mode.
+INFO    2020-11-01 10:19:31,177 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Finished Spring Data repository scanning in 171ms. Found 10 repository interfaces.
+INFO    2020-11-01 10:19:31,831 [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] [] - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$29aba846] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO    2020-11-01 10:19:32,595 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat initialized with port(s): 8087 (http)
+INFO    2020-11-01 10:19:32,860 [restartedMain] org.springframework.web.context.ContextLoader [] [] - Root WebApplicationContext: initialization completed in 3263 ms
+INFO    2020-11-01 10:19:33,691 [restartedMain] org.mongodb.driver.cluster [] [] - Cluster created with settings {hosts=[mongo:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+INFO    2020-11-01 10:19:33,731 [cluster-ClusterId{value='5f9e7da56ffcfa64576aa81e', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo: Nom ou service inconnu
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo: Nom ou service inconnu
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:19:34,151 [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [] [] - LiveReload server is running on port 35729
+INFO    2020-11-01 10:19:34,336 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field '_id' in type 'Payment' for path 'payment -> commande -> payment'
+INFO    2020-11-01 10:19:34,337 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field 'commande' in type 'Payment' for path 'payment -> commande -> payment'
+INFO    2020-11-01 10:19:34,342 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field '_id' in type 'Commande' for path 'commande -> payment -> commande'
+INFO    2020-11-01 10:19:34,343 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field 'payment' in type 'Commande' for path 'commande -> payment -> commande'
+INFO    2020-11-01 10:19:35,360 [restartedMain] org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration [] [] - 
+
+Using generated security password: f464b86e-dfab-46df-a3c6-26c6f86da6b8
+
+INFO    2020-11-01 10:19:35,510 [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain [] [] - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@29f461c9, org.springframework.security.web.context.SecurityContextPersistenceFilter@4aab9024, org.springframework.security.web.header.HeaderWriterFilter@d8d0e00, org.springframework.security.web.authentication.logout.LogoutFilter@2e90a5e0, com.mamdy.security.JWTAuthorizationFilter@2d58abb1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5b43430c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@475cf4e7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5e267955, org.springframework.security.web.session.SessionManagementFilter@60c5a316, org.springframework.security.web.access.ExceptionTranslationFilter@2d78b9b8, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5a812e3f]
+INFO    2020-11-01 10:19:35,803 [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor [] [] - Initializing ExecutorService 'applicationTaskExecutor'
+INFO    2020-11-01 10:19:36,569 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat started on port(s): 8087 (http) with context path ''
+INFO    2020-11-01 10:19:36,573 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Started CatalogServiceApplication in 8.254 seconds (JVM running for 10.133)
+INFO    2020-11-01 10:19:36,608 [restartedMain] org.mongodb.driver.cluster [] [] - Cluster description not yet available. Waiting for 30000 ms before timing out
+INFO    2020-11-01 10:19:36,608 [cluster-ClusterId{value='5f9e7da56ffcfa64576aa81e', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1281)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:19:44,117 [cluster-ClusterId{value='5f9e7da56ffcfa64576aa81e', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo: Nom ou service inconnu
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo: Nom ou service inconnu
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:19:44,618 [cluster-ClusterId{value='5f9e7da56ffcfa64576aa81e', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1281)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:19:54,128 [cluster-ClusterId{value='5f9e7da56ffcfa64576aa81e', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo: Nom ou service inconnu
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo: Nom ou service inconnu
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:19:54,629 [cluster-ClusterId{value='5f9e7da56ffcfa64576aa81e', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1281)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:20:04,147 [cluster-ClusterId{value='5f9e7da56ffcfa64576aa81e', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo: Nom ou service inconnu
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo: Nom ou service inconnu
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:20:04,648 [cluster-ClusterId{value='5f9e7da56ffcfa64576aa81e', description='null'}-mongo:27017] org.mongodb.driver.cluster [] [] - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: mongo
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:188)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:117)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: mongo
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1281)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at java.net.InetAddress.getByName(InetAddress.java:1077)
+	at com.mongodb.ServerAddress.getSocketAddress(ServerAddress.java:186)
+	... 5 more
+INFO    2020-11-01 10:20:06,614 [restartedMain] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [] [] - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+ERROR   2020-11-01 10:20:06,617 [restartedMain] org.springframework.boot.SpringApplication [] [] - Application run failed
+java.lang.IllegalStateException: Failed to execute CommandLineRunner
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:816)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:797)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.mamdy.CatalogServiceApplication.main(CatalogServiceApplication.java:23)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.springframework.dao.DataAccessResourceFailureException: Timed out after 30000 ms while waiting to connect. Client view of cluster state is {type=UNKNOWN, servers=[{address=mongo:27017, type=UNKNOWN, state=CONNECTING, exception={com.mongodb.MongoSocketException: mongo}, caused by {java.net.UnknownHostException: mongo}}]; nested exception is com.mongodb.MongoTimeoutException: Timed out after 30000 ms while waiting to connect. Client view of cluster state is {type=UNKNOWN, servers=[{address=mongo:27017, type=UNKNOWN, state=CONNECTING, exception={com.mongodb.MongoSocketException: mongo}, caused by {java.net.UnknownHostException: mongo}}]
+	at org.springframework.data.mongodb.core.MongoExceptionTranslator.translateExceptionIfPossible(MongoExceptionTranslator.java:90)
+	at org.springframework.data.mongodb.core.MongoTemplate.potentiallyConvertRuntimeException(MongoTemplate.java:2781)
+	at org.springframework.data.mongodb.core.MongoTemplate.execute(MongoTemplate.java:547)
+	at org.springframework.data.mongodb.core.MongoTemplate.doRemove(MongoTemplate.java:1689)
+	at org.springframework.data.mongodb.core.MongoTemplate.remove(MongoTemplate.java:1665)
+	at org.springframework.data.mongodb.repository.support.SimpleMongoRepository.deleteAll(SimpleMongoRepository.java:185)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:359)
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:200)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:644)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:608)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.lambda$invoke$3(RepositoryFactorySupport.java:595)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:595)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:59)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:93)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:61)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy116.deleteAll(Unknown Source)
+	at com.mamdy.CatalogServiceApplication.lambda$start$4(CatalogServiceApplication.java:32)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:813)
+	... 10 more
+Caused by: com.mongodb.MongoTimeoutException: Timed out after 30000 ms while waiting to connect. Client view of cluster state is {type=UNKNOWN, servers=[{address=mongo:27017, type=UNKNOWN, state=CONNECTING, exception={com.mongodb.MongoSocketException: mongo}, caused by {java.net.UnknownHostException: mongo}}]
+	at com.mongodb.internal.connection.BaseCluster.getDescription(BaseCluster.java:179)
+	at com.mongodb.internal.connection.SingleServerCluster.getDescription(SingleServerCluster.java:41)
+	at com.mongodb.client.internal.MongoClientDelegate.getConnectedClusterDescription(MongoClientDelegate.java:136)
+	at com.mongodb.client.internal.MongoClientDelegate.createClientSession(MongoClientDelegate.java:94)
+	at com.mongodb.client.internal.MongoClientDelegate$DelegateOperationExecutor.getClientSession(MongoClientDelegate.java:249)
+	at com.mongodb.client.internal.MongoClientDelegate$DelegateOperationExecutor.execute(MongoClientDelegate.java:190)
+	at com.mongodb.client.internal.MongoCollectionImpl.executeSingleWriteRequest(MongoCollectionImpl.java:960)
+	at com.mongodb.client.internal.MongoCollectionImpl.executeDelete(MongoCollectionImpl.java:940)
+	at com.mongodb.client.internal.MongoCollectionImpl.deleteMany(MongoCollectionImpl.java:551)
+	at org.springframework.data.mongodb.core.MongoTemplate$9.doInCollection(MongoTemplate.java:1729)
+	at org.springframework.data.mongodb.core.MongoTemplate$9.doInCollection(MongoTemplate.java:1689)
+	at org.springframework.data.mongodb.core.MongoTemplate.execute(MongoTemplate.java:545)
+	... 35 more
+INFO    2020-11-01 10:20:06,624 [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor [] [] - Shutting down ExecutorService 'applicationTaskExecutor'
+INFO    2020-11-01 10:26:31,520 [background-preinit] org.hibernate.validator.internal.util.Version [] [] - HV000001: Hibernate Validator 6.1.1.Final
+INFO    2020-11-01 10:26:31,724 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Starting CatalogServiceApplication on kubernetes-master with PID 30642 (/home/mamdy/Bureau/_DVT/Workspaces/catalog-service/target/classes started by mamdy in /home/mamdy/Bureau/_DVT/Workspaces/catalog-service)
+INFO    2020-11-01 10:26:31,725 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - No active profile set, falling back to default profiles: default
+INFO    2020-11-01 10:26:31,933 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO    2020-11-01 10:26:31,934 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO    2020-11-01 10:26:33,761 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Bootstrapping Spring Data repositories in DEFAULT mode.
+INFO    2020-11-01 10:26:33,941 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Finished Spring Data repository scanning in 172ms. Found 10 repository interfaces.
+INFO    2020-11-01 10:26:34,558 [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] [] - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$ba500cf] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO    2020-11-01 10:26:35,246 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat initialized with port(s): 8087 (http)
+INFO    2020-11-01 10:26:35,548 [restartedMain] org.springframework.web.context.ContextLoader [] [] - Root WebApplicationContext: initialization completed in 3613 ms
+INFO    2020-11-01 10:26:36,456 [restartedMain] org.mongodb.driver.cluster [] [] - Cluster created with settings {hosts=[127.0.0.1:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+INFO    2020-11-01 10:26:36,545 [cluster-ClusterId{value='5f9e7f4c6ffcfa77b2c3ee1b', description='null'}-127.0.0.1:27017] org.mongodb.driver.connection [] [] - Opened connection [connectionId{localValue:1, serverValue:3}] to 127.0.0.1:27017
+INFO    2020-11-01 10:26:36,554 [cluster-ClusterId{value='5f9e7f4c6ffcfa77b2c3ee1b', description='null'}-127.0.0.1:27017] org.mongodb.driver.cluster [] [] - Monitor thread successfully connected to server with description ServerDescription{address=127.0.0.1:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[3, 6, 3]}, minWireVersion=0, maxWireVersion=6, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=6736523}
+INFO    2020-11-01 10:26:36,801 [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [] [] - LiveReload server is running on port 35729
+INFO    2020-11-01 10:26:36,947 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field '_id' in type 'Payment' for path 'payment -> commande -> payment'
+INFO    2020-11-01 10:26:36,949 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field 'commande' in type 'Payment' for path 'payment -> commande -> payment'
+INFO    2020-11-01 10:26:36,954 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field '_id' in type 'Commande' for path 'commande -> payment -> commande'
+INFO    2020-11-01 10:26:36,954 [restartedMain] org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver [] [] - Found cycle for field 'payment' in type 'Commande' for path 'commande -> payment -> commande'
+INFO    2020-11-01 10:26:37,728 [restartedMain] org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration [] [] - 
+
+Using generated security password: 05eb6749-d239-48e2-bec0-3040f0fa549d
+
+INFO    2020-11-01 10:26:37,878 [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain [] [] - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2f72a8ef, org.springframework.security.web.context.SecurityContextPersistenceFilter@731c5b98, org.springframework.security.web.header.HeaderWriterFilter@12d6c622, org.springframework.security.web.authentication.logout.LogoutFilter@1e0771a, com.mamdy.security.JWTAuthorizationFilter@6e60c5bd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6c6be405, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@214e34, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@89d7702, org.springframework.security.web.session.SessionManagementFilter@47f0fff6, org.springframework.security.web.access.ExceptionTranslationFilter@5252b3c4, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7637a7b7]
+INFO    2020-11-01 10:26:38,173 [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor [] [] - Initializing ExecutorService 'applicationTaskExecutor'
+INFO    2020-11-01 10:26:38,879 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat started on port(s): 8087 (http) with context path ''
+INFO    2020-11-01 10:26:38,882 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Started CatalogServiceApplication in 7.673 seconds (JVM running for 8.668)
+INFO    2020-11-01 10:26:38,983 [restartedMain] org.mongodb.driver.connection [] [] - Opened connection [connectionId{localValue:2, serverValue:4}] to 127.0.0.1:27017
