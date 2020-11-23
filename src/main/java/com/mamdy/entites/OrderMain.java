@@ -8,10 +8,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Document
+@Document(collection = "orders")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,10 +32,6 @@ public class OrderMain {
     @NotNull
     @UniqueElements
     private String numOrder;
-//
-//    @OneToMany(cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY,
-//            mappedBy = "orderMain")
 
     @DBRef
     private Set<ProductInOrder> products = new HashSet<>();

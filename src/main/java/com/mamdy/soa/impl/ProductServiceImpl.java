@@ -152,8 +152,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void decreaseStock(String productId, int amount) {
-		Product product = findOne(productId);
+	public void decreaseStock(String productCode, int amount) {
+		Product product = findByCode(productCode);
 		if (product == null) throw new MyException(ResultEnum.PRODUCT_NOT_EXIST);
 
 		int update = product.getProductStock() - amount;

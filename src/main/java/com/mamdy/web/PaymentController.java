@@ -1,6 +1,7 @@
 package com.mamdy.web;
 
 
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.mamdy.dto.PaymentIntentDto;
 import com.mamdy.soa.PaymentService;
 import com.stripe.exception.StripeException;
@@ -26,7 +27,7 @@ public class PaymentController {
     }
 
     @PostMapping("/confirm/{id}")
-    public ResponseEntity<String> confirm(@PathVariable("id") String id) throws StripeException {
+    public ResponseEntity<String> confirm(@PathVariable("id") String id) throws StripeException, MailjetSocketTimeoutException {
         PaymentIntent paymentIntent = paymentService.confirm(id);
         String paymentStr = paymentIntent.toJson();
         return new ResponseEntity<String>(paymentStr, HttpStatus.OK);

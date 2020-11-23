@@ -30,7 +30,7 @@ public class CatalogServiceApplication {
 
             Set<ProductInOrder> productsInOrders = new HashSet<>();
             categoryRepository.deleteAll();
-            Stream.of("C1 Ordinateurs", "C2 Imprimantes", "C3 Maison", "C4 Telephone", "C5 Electro-Menager").forEach(c -> {
+            Stream.of("C1 Ordinateurs", "C2 Imprimantes", "C3 Maison", "C4 Telephone", "C5 Electro-Menager","C6 Alimentation","C7 Mecanique","C8 Voyage","C9 Losirs","C10 Tourisme").forEach(c -> {
                 categoryRepository.save(new Category(c.split(" ")[0], c.split(" ")[1], null, null, true, new ArrayList<>()));
 
 

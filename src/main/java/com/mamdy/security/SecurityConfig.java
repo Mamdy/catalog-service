@@ -30,6 +30,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         //activation du formulaire de login
         // http.formLogin();
+
+           /*Cette configuration indique à Spring de
+         rediriger toutes les requêtes HTTP simples vers la même URL en utilisant HTTPS si l'entête - X-Forwarded-Proto
+          est présent. Heroku définit l'en- X-Forwarded-Prototête pour vous, ce qui signifie que la demande sera
+          redirigée via le routeur Heroku où SSL est terminé.
+         */
+
+        http.requiresChannel()
+                .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+                .requiresSecure();
+
         //dire à spring qu'on ne veut plus s'authentifier par session(STATELESS)(la on desactive les session) puis on utlise les token
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

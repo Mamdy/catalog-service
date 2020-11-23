@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,8 +34,11 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         response.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, authorization");
         response.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Credentials, authorization");
         response.addHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH");
-        if (request.getMethod().equals("OPTIONS") || request.getMethod().equals("GET")) {
+        response.setContentType(String.valueOf(MediaType.APPLICATION_JSON));
+        if (request.getMethod().equals("OPTIONS")) {
             response.setStatus(HttpServletResponse.SC_OK);
+            //filterChain.doFilter(request, response);
+            return;
         } else {
 
             String jwtToken = request.getHeader(SecurityParams.JWT_HEADER_NAME);

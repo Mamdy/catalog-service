@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -41,27 +42,33 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void mergeLocalCart(Collection<ProductInOrder> productInOrders, Client client) {
+        //on recupre le panier du client et on ajoute le/les nouveau produits à commander
         Cart finalCart = client.getCart();
+        if (finalCart == null) {
+            finalCart = new Cart();
+            finalCart.setProductsInOrder(new HashSet<>());
+            finalCart.setClient(client);
+            finalCart = cartRepository.save(finalCart);
+        }
+
+        Cart finalCart1 = finalCart;
         productInOrders.forEach(productInOrder -> {
 
-            Set<ProductInOrder> set = finalCart.getProductsInOrder();
-            set.forEach(p->{
-                System.out.println(p.getProductId());
-            });
-            Optional<ProductInOrder> old = set.stream().filter(e -> e.getProductId().equals(productInOrder.getProductId())).findFirst();
+            Set<ProductInOrder> set = finalCart1.getProductsInOrder();
+            Optional<ProductInOrder> old = set.stream().filter(e -> e.getProductCode().equals(productInOrder.getProductCode())).findFirst();
             ProductInOrder prod;
             if (old.isPresent()) {
                 prod = old.get();
                 prod.setCount(productInOrder.getCount() + prod.getCount());
             } else {
                 prod = productInOrder;
-                prod.setCart(finalCart);
-                finalCart.getProductsInOrder().add(prod);
+                prod.setCart(finalCart1);
+                finalCart1.getProductsInOrder().add(prod);
             }
             productInOrderRepository.save(prod);
         });
 
-        cartRepository.save(finalCart);
+        cartRepository.save(finalCart1);
 
     }
 
@@ -91,7 +98,7 @@ public class CartServiceImpl implements CartService {
         for (ProductInOrder productInOrder : client.getCart().getProductsInOrder()) {
             productInOrder.setCart(null);
             productInOrder.setOrderMain(order);
-            productService.decreaseStock(productInOrder.getId(), productInOrder.getCount());
+            productService.decreaseStock(productInOrder.getProductCode(), productInOrder.getCount());
             productInOrderRepository.save(productInOrder);
 
         }

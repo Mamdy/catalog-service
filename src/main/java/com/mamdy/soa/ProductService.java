@@ -30,7 +30,7 @@ public interface ProductService {
 	Product findByCode(String code);
 
 	//decrease stock
-	void decreaseStock(String productId, int amount);
+	void decreaseStock(String productCode, int amount);
 
 	Product offSale(String productId);
 

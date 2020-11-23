@@ -15,7 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -51,37 +54,29 @@ public class CartController {
 
     @PostMapping("")
     public ResponseEntity<Cart> mergeCart(@RequestBody ItemForm itemFormData, Principal principal) {
-        //si authentification est reussi on genere le token
-        // User user1 = new User(userDetails.getUsername(),userDetails.getPassword());
-        //        Client newCustomer = clientRepository.findByUsername(principal.getName().toLowerCase());
-
         Client newCustomer = clientRepository.findByUsername(itemFormData.getClient().getUsername());
+        //si nouveau Client, on l'associe à un nouveau panier puis on l'enregistre en base
         if (newCustomer == null) {
             newCustomer = clientRepository.save(itemFormData.getClient());
-            if (newCustomer.getEmail().equalsIgnoreCase(principal.getName()) && newCustomer.getCart() == null) {
-
-                Cart cart = new Cart();
-                cart.setProductsInOrder(new HashSet<>());
-                cart.setClient(newCustomer);
-                cart = cartRepository.save(cart);
-
-                newCustomer.setCart(cart);
-                clientRepository.save(newCustomer);
-
-            }
+            //on lui creer et associe un nouveau panier
+            Cart cart = new Cart();
+            cart.setProductsInOrder(new HashSet<>());
+            cart.setClient(newCustomer);
+            cart = cartRepository.save(cart);
+            newCustomer.setCart(cart);
+            clientRepository.save(newCustomer);
         }
-
-
 
         try {
             cartService.mergeLocalCart(itemFormData.getLocalCartProductsInOrder(), newCustomer);
         } catch (Exception e) {
             ResponseEntity.badRequest().body("Merge Cart Failed");
         }
+
         return ResponseEntity.ok(cartService.getCart(newCustomer));
     }
 
-//    private Cart mergCart(Collection<ProductInOrder> productInOrders, Client client, Principal principal){
+    //    private Cart mergCart(Collection<ProductInOrder> productInOrders, Client client, Principal principal){
 //        Client newCustomer = clientRepository.findByUsername(client.getUsername());
 //        if (newCustomer == null) {
 //            newCustomer = clientRepository.save(client);
@@ -119,7 +114,7 @@ public class CartController {
             //mergeCart(Collections.singleton(new ProductInOrder(productInfo, dataFromform.getQuantity())), dataFromform.getClient(), principal);
             ProductInOrder productInOrder = new ProductInOrder(productInfo, dataFromform.getQuantity());
             dataFromform.setLocalCartProductsInOrder(Collections.singleton(productInOrder));
-            mergeCart(dataFromform,principal);
+            this.mergeCart(dataFromform, principal);
 //            dataFromform.getProductInOrders().add(productInOrder);
 //            mergCart(dataFromform.getProductInOrders(), dataFromform.getClient(), principal);
         } catch (Exception e) {
