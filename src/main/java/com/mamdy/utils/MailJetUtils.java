@@ -59,6 +59,7 @@ public class MailJetUtils {
                                                 .put("Email", recipient)))
                                 .put(Emailv31.Message.SUBJECT, subject + date.substring(0, 10))
                                 .put(Emailv31.Message.TEXTPART, body)
+                                //.put(Emailv31.Message.HTMLPART, "<h3>  `${body}` Cher Client, merci de visiter notre site <a href=\"https://my-angular-appv1.herokuapp.com/\">E-shop224</a>!</h3><br />A bientot pour d'autres achats! :-)")
                         ));
 
         try {

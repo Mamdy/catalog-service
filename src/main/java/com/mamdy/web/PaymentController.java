@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/payment")
 @CrossOrigin(origins = "*")
@@ -27,8 +29,8 @@ public class PaymentController {
     }
 
     @PostMapping("/confirm/{id}")
-    public ResponseEntity<String> confirm(@PathVariable("id") String id) throws StripeException, MailjetSocketTimeoutException {
-        PaymentIntent paymentIntent = paymentService.confirm(id);
+    public ResponseEntity<String> confirm(@PathVariable("id") String id, @RequestBody String orderId, Principal principal) throws StripeException, MailjetSocketTimeoutException {
+        PaymentIntent paymentIntent = paymentService.confirm(id,orderId, principal.getName().toString());
         String paymentStr = paymentIntent.toJson();
         return new ResponseEntity<String>(paymentStr, HttpStatus.OK);
     }

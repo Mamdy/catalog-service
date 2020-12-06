@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //  super.configure(http);
         http.csrf().disable();
-        //activation du formulaire de login
+        //activation du formulaire de login de spring
         // http.formLogin();
 
            /*Cette configuration indique à Spring de
@@ -48,17 +48,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/apiTest/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/categories/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/products/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/order/**").permitAll();
+       // http.authorizeRequests().antMatchers(HttpMethod.GET, "/order/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/searchKeyWord/**").permitAll();
         http.authorizeRequests().antMatchers("/categories/**").hasAnyAuthority("CUSTOMER", "ADMIN");
         http.authorizeRequests().antMatchers("/products/**").hasAnyAuthority("CUSTOMER", "ADMIN");
-        http.authorizeRequests().antMatchers("/cart/add").permitAll();
+       // http.authorizeRequests().antMatchers("/cart/add").permitAll();
         http.authorizeRequests().antMatchers("/cart/**").permitAll();
-        http.authorizeRequests().antMatchers("/order/**").permitAll();
-        http.authorizeRequests().antMatchers("/payment/paymentintent/**").hasAnyAuthority("CUSTOMER");
+        // http.authorizeRequests().antMatchers("/order/**").permitAll();
+        /*http.authorizeRequests().antMatchers("/payment/paymentintent/**").hasAnyAuthority("CUSTOMER");
         http.authorizeRequests().antMatchers("/payment/confirm/**").hasAnyAuthority("CUSTOMER");
         //http.authorizeRequests().antMatchers("/order/**").authenticated();
-        http.authorizeRequests().antMatchers("/order/finish/**").hasAnyAuthority("CUSTOMER", "ADMIN");
+        http.authorizeRequests().antMatchers("/order/finish/**").hasAnyAuthority("CUSTOMER", "ADMIN");*/
 
 
         //        http.authorizeRequests().antMatchers(HttpMethod.GET,"/cart/**").permitAll();

@@ -1,18 +1,23 @@
 package com.mamdy.soa;
 
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
+import com.mamdy.dao.CartRepository;
+import com.mamdy.dao.ClientRepository;
+import com.mamdy.dao.ProductInOrderRepository;
 import com.mamdy.dto.PaymentIntentDto;
+import com.mamdy.entites.Cart;
+import com.mamdy.entites.Client;
+import com.mamdy.entites.OrderMain;
+import com.mamdy.entites.ProductInOrder;
 import com.mamdy.utils.MailJetUtils;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PaymentService {
@@ -24,6 +29,23 @@ public class PaymentService {
 
     @Value("${mailjet.key.secret}")
     String mailjetSecretKey;
+
+    @Autowired
+    public OrderService orderService;
+
+    @Autowired
+    ClientRepository clientRepository;
+
+    @Autowired
+    CartRepository cartRepository;
+
+    @Autowired
+    ProductInOrderRepository productInOrderRepository;
+
+    @Autowired
+    CartService cartService;
+
+
 
     public PaymentIntent paymentIntent(final PaymentIntentDto paymentIntentDto) throws StripeException {
         Stripe.apiKey = secretKey;
@@ -37,26 +59,39 @@ public class PaymentService {
         return PaymentIntent.create(params);
     }
 
-    public PaymentIntent confirm(String id) throws StripeException, MailjetSocketTimeoutException {
+    public PaymentIntent confirm(String id, String orderId, String customerMail) throws StripeException, MailjetSocketTimeoutException {
+        String customerName = clientRepository.findByUsername(customerMail).getFirstName();
         Stripe.apiKey = secretKey;
         PaymentIntent paymentIntent = PaymentIntent.retrieve(id);
         Map<String, Object> params = new HashMap<>();
         params.put("payment_method", "pm_card_visa");
         paymentIntent = paymentIntent.confirm(params);
-        if(paymentIntent != null) {
-            //envois de mail pour notifier le client de sa commande
-            MailJetUtils.sendEmail(
-                    "balphamamoudou2013@gmail.com",
-                    "balphamamoudou2013@gmail.com",
-                    "Votre Commande ",
-                    "Bonjour, Votre Commande num xxxx vient d'etre effectuer sur notre Site et vous voux sera expedier dans les delais." +
-                            "Merci de votre Confiance et à Bientot",
-                    mailjetPublicKey,
-                    mailjetSecretKey
+        if (paymentIntent != null) {
+            //mise à jour du champ status de la commande dans la table des commandes(Order)
+            OrderMain order = orderService.finish(orderId);
+            if (order != null) {
+                //envois de mail pour notifier le client de sa commande
+                MailJetUtils.sendEmail(
+                        "balphamamoudou2013@gmail.com",
+                        customerMail,
+                        "No reply,Votre Commande ",
+                        "Bonjour " + customerName + ",\n Votre Commande numéro: " + order.getNumOrder() + " vient d'être valider sur notre Site. \n" +
+                                "et vou sera expedier dans les bref delais. \n" +
+                                "Merci pour votre Confiance," +
+                                " et à Bientot",
+                        mailjetPublicKey,
+                        mailjetSecretKey
+                );
+                //vider le panier du client en base poru ce/ces productsInOrderes commandeés
+                Client customer = this.clientRepository.findByUsername(order.getBuyerEmail());
+                Set<ProductInOrder> setPio = order.getProducts();
+                setPio.forEach(productInOrder -> {
+                 this.cartService.delete(productInOrder.getProductCode(), customer);
+                });
+            }
 
-            );
         }
-        return paymentIntent;
+        return  paymentIntent;
     }
 
     public PaymentIntent cancel(String id) throws StripeException {

@@ -64,7 +64,7 @@ public class CartController {
             cart.setClient(newCustomer);
             cart = cartRepository.save(cart);
             newCustomer.setCart(cart);
-            clientRepository.save(newCustomer);
+            newCustomer = clientRepository.save(newCustomer);
         }
 
         try {
@@ -76,28 +76,6 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCart(newCustomer));
     }
 
-    //    private Cart mergCart(Collection<ProductInOrder> productInOrders, Client client, Principal principal){
-//        Client newCustomer = clientRepository.findByUsername(client.getUsername());
-//        if (newCustomer == null) {
-//            newCustomer = clientRepository.save(client);
-//            if (newCustomer.getEmail().equalsIgnoreCase(principal.getName()) && newCustomer.getCart() == null) {
-//
-//                Cart cart = new Cart();
-//                cart.setProductsInOrder(new HashSet<>());
-//                cart.setClient(newCustomer);
-//                cart = cartRepository.save(cart);
-//
-//                newCustomer.setCart(cart);
-//                clientRepository.save(newCustomer);
-//
-//            }
-//        }
-//
-//        cartService.mergeLocalCart(productInOrders, newCustomer);
-//
-//
-//        return  cartService.getCart(newCustomer);
-//    }
     @GetMapping("")
     public Set<ProductInOrder> getCart(Principal principal) {
         Client client = clientRepository.findByUsername(principal.getName().toLowerCase());
@@ -110,13 +88,9 @@ public class CartController {
         Product productInfo;
         productInfo = productService.findByCode(dataFromform.getProductCode());
         try {
-
-            //mergeCart(Collections.singleton(new ProductInOrder(productInfo, dataFromform.getQuantity())), dataFromform.getClient(), principal);
             ProductInOrder productInOrder = new ProductInOrder(productInfo, dataFromform.getQuantity());
             dataFromform.setLocalCartProductsInOrder(Collections.singleton(productInOrder));
             this.mergeCart(dataFromform, principal);
-//            dataFromform.getProductInOrders().add(productInOrder);
-//            mergCart(dataFromform.getProductInOrders(), dataFromform.getClient(), principal);
         } catch (Exception e) {
             log.info(e.getMessage().toString());
             return false;

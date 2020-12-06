@@ -21,17 +21,10 @@ public class Cart {
     @Id
     private String id;
 
-    //    @OneToOne(fetch = FetchType.LAZY)
-//    @MapsId
-//    @JsonIgnore
-//    @JoinColumn(name = "email", referencedColumnName = "email")
     @JsonIgnore
     @DBRef
     private Client client = new Client();
 
-    //    @OneToMany(cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY, orphanRemoval = true,
-//            mappedBy = "cart")
     @DBRef
     private Set<ProductInOrder> productsInOrder = new HashSet<>();
 

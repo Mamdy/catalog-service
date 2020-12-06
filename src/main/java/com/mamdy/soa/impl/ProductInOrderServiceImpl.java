@@ -22,25 +22,20 @@ public class ProductInOrderServiceImpl implements ProductInOrderService {
     @Transactional
     public void update(String itemId, Integer quantity, Client client) {
         Optional<ProductInOrder> op;
-        op = client.getCart().getProductsInOrder().stream().filter(e -> itemId.equals(e.getProductId())).findFirst();
+        op = client.getCart().getProductsInOrder().stream().filter(e -> itemId.equals(e.getProductCode())).findFirst();
         if (op.isPresent()) {
             ProductInOrder productInOrder = op.get();
             productInOrder.setCount(quantity);
             productInOrderRepository.save(productInOrder);
 
         }
-
-//        op.ifPresent(productInOrder -> {
-//            productInOrder.setCount(quantity);
-//            productInOrderRepository.save(productInOrder);
-//        });
-
+        
     }
 
     @Override
     public ProductInOrder findOne(String itemId, Client client) {
         Optional<ProductInOrder> op;
-        op = client.getCart().getProductsInOrder().stream().filter(e -> itemId.equals(e.getProductId())).findFirst();
+        op = client.getCart().getProductsInOrder().stream().filter(e -> itemId.equals(e.getProductCode())).findFirst();
         AtomicReference<ProductInOrder> res = new AtomicReference<>();
         op.ifPresent(res::set);
         return res.get();
