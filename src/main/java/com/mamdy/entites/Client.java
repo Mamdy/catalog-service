@@ -26,10 +26,7 @@ public class Client {
     private String email;
     private String phone;
     private String username;
-    @DBRef
-    private Collection<Commande> commandes = new ArrayList<>();
 
-    //@OneToOne(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore  // fix bi-direction toString() recursion problem
     @DBRef
     private Cart cart;

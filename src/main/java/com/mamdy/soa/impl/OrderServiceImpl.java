@@ -86,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
         // Restore Stock
         Iterable<ProductInOrder> products = orderMain.getProducts();
         for (ProductInOrder productInOrder : products) {
-            Product productInfo = productRepository.findById(productInOrder.getId()).get();
+            Product productInfo = productRepository.findByCode(productInOrder.getProductCode());
             if (productInfo != null) {
                 productService.increaseStock(productInOrder.getId(), productInOrder.getCount());
             }

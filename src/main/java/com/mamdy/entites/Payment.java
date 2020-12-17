@@ -14,5 +14,4 @@ public class Payment {
     private Date datePayment;
     private long cadNumber;
     private String cardType;
-    private Commande commande;
 }

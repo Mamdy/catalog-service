@@ -45,6 +45,9 @@ public class PaymentService {
     @Autowired
     CartService cartService;
 
+    @Autowired
+    ProductService productService;
+
 
 
     public PaymentIntent paymentIntent(final PaymentIntentDto paymentIntentDto) throws StripeException {
@@ -82,11 +85,12 @@ public class PaymentService {
                         mailjetPublicKey,
                         mailjetSecretKey
                 );
-                //vider le panier du client en base poru ce/ces productsInOrderes commandeés
+                //vider le panier du client en base pour ce/ces productsInOrderes commandés et mettre à jour le stock des produits restant
                 Client customer = this.clientRepository.findByUsername(order.getBuyerEmail());
                 Set<ProductInOrder> setPio = order.getProducts();
                 setPio.forEach(productInOrder -> {
-                 this.cartService.delete(productInOrder.getProductCode(), customer);
+                    this.productService.decreaseStock(productInOrder.getProductCode(), productInOrder.getCount());
+                    //productInOrderRepository.deleteById(productInOrder.getId()); à revoir niveau conception si necessaire ou pas
                 });
             }
 

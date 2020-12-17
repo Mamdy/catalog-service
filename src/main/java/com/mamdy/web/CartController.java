@@ -3,8 +3,6 @@ package com.mamdy.web;
 import com.mamdy.dao.*;
 import com.mamdy.entites.*;
 import com.mamdy.form.ItemForm;
-import com.mamdy.form.OrderForm;
-import com.mamdy.form.OrderProduct;
 import com.mamdy.soa.CartService;
 import com.mamdy.soa.ProductInOrderService;
 import com.mamdy.soa.ProductService;
@@ -39,14 +37,10 @@ public class CartController {
     @Autowired
     ClientRepository clientRepository;
 
-    @Autowired
-    CommandeRepository commandeRepository;
 
     @Autowired
     ProductRepository productRepository;
 
-    @Autowired
-    CommandeItemRepository commandeItemRepository;
 
     @Autowired
     CartRepository cartRepository;
@@ -58,7 +52,7 @@ public class CartController {
         //si nouveau Client, on l'associe à un nouveau panier puis on l'enregistre en base
         if (newCustomer == null) {
             newCustomer = clientRepository.save(itemFormData.getClient());
-            //on lui creer et associe un nouveau panier
+            //on lui creer un nouveau panier
             Cart cart = new Cart();
             cart.setProductsInOrder(new HashSet<>());
             cart.setClient(newCustomer);
@@ -79,7 +73,8 @@ public class CartController {
     @GetMapping("")
     public Set<ProductInOrder> getCart(Principal principal) {
         Client client = clientRepository.findByUsername(principal.getName().toLowerCase());
-        return client.getCart().getProductsInOrder();
+        Set<ProductInOrder> productInOrders = client.getCart().getProductsInOrder();
+        return productInOrders;
     }
 
 
@@ -109,9 +104,7 @@ public class CartController {
     public void deleteItem(@PathVariable("itemId") String itemId, Principal principal) {
         Client client = clientRepository.findByUsername(principal.getName().toLowerCase());
         cartService.delete(itemId, client);
-        // flush memory into DB
     }
-
 
     @PostMapping("/checkout")
     public ResponseEntity checkout(Principal principal) {
@@ -119,38 +112,6 @@ public class CartController {
 
         cartService.checkout(client);
         return ResponseEntity.ok(null);
-    }
-
-
-    @PostMapping("/orders")
-    public Commande order(@RequestBody OrderForm orderForm) {
-        Client client = new Client();
-        client.setFirstName(orderForm.getClient().getFirstName());
-        client.setEmail(orderForm.getClient().getEmail());
-        client.setAddress(orderForm.getClient().getAddress());
-        client.setUsername(orderForm.getClient().getUsername());
-        client = clientRepository.save(client);
-        System.out.println(client.getId());
-
-        Commande order = new Commande();
-        order.setClient(client);
-        order.setDateCommande(new Date());
-        order = commandeRepository.save(order);
-        double totale = 0;
-
-        for (OrderProduct op : orderForm.getProducts()) {
-            CommandeItem orderItem = new CommandeItem();
-            orderItem.setCommande(order);
-            Product product = productRepository.findById(op.getId()).get();
-            orderItem.setProduct(product);
-            orderItem.setBuyingPrice(product.getCurrentPrice());
-            orderItem.setNbProduct(product.getQuantity());
-            commandeItemRepository.save(orderItem);
-            totale += op.getQuantity() * product.getCurrentPrice();
-        }
-        order.setOrderTotalPrices(totale);
-
-        return order;
     }
 
 

@@ -2,6 +2,7 @@ package com.mamdy.soa.impl;
 
 import antlr.StringUtils;
 import com.mamdy.dao.CartRepository;
+import com.mamdy.dao.ClientRepository;
 import com.mamdy.dao.OrderRepository;
 import com.mamdy.dao.ProductInOrderRepository;
 import com.mamdy.entites.Cart;
@@ -32,6 +33,9 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     CartRepository cartRepository;
+
+    @Autowired
+    ClientRepository clientRepository;
 
 
     @Override
@@ -102,29 +106,35 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void checkout(Client client) {
         final LocalDateTime ldt = LocalDateTime.now();
-
-        final String date = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm", Locale.FRANCE).format(ldt);
-        String numOrder = RandomString.make(3) + date.substring(2,3) + client.getFirstName().substring(0,1) + date.substring(5,6) + date.substring(8,9);
-        System.out.println(numOrder);
-
+        String numOrder = this.generateNumOrder(ldt);
+        numOrder = numOrder + client.getFirstName().substring(0,3);
 
         OrderMain order = new OrderMain(client);
         order.setCreateTime(LocalDateTime.now());
         order.setProducts(client.getCart().getProductsInOrder());
-        order.setNumOrder(numOrder);
+        order.setNumOrder(numOrder.toUpperCase());
 
         order = orderRepository.save(order);
         for (ProductInOrder productInOrder : client.getCart().getProductsInOrder()) {
+            //on vide la le panier du client
             productInOrder.setCart(null);
             productInOrder.setOrderMain(order);
-            productService.decreaseStock(productInOrder.getProductCode(), productInOrder.getCount());
+            Cart cart = client.getCart();
+            if(cart.getProductsInOrder().contains(productInOrder)){
+                 cart.getProductsInOrder().remove(productInOrder);
+                 cartRepository.save(cart);
+            }
             productInOrderRepository.save(productInOrder);
 
         }
 
+
     }
 
-    private String generateOrderNum(String num){
-        return num + RandomString.make(5);
+    private String generateNumOrder(LocalDateTime ldt){
+        final String date = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm", Locale.FRANCE).format(ldt);
+        return RandomString.make(3) + date.substring(0,4) + date.substring(5,7) + date.substring(8,10)+ date.substring(11,13)+ date.substring(14,16);
+
     }
+
 }
