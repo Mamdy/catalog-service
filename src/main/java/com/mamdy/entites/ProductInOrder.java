@@ -68,7 +68,7 @@ private OrderMain orderMain;
         this.productCode = product.getCode();
         this.productName = product.getName();
         this.productDescription = product.getDescription();
-        this.productIcon = product.getPhotoUrl();
+        this.productIcon = product.getPhotoUrl().get(0);
         this.categoryType = product.getCategory().getName();
         this.productPrice = new BigDecimal(product.getPrice());
         this.productStock = product.getProductStock();

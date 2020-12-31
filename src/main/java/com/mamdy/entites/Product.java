@@ -16,6 +16,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Document
 @Data
@@ -54,7 +57,7 @@ public class Product {
 	private int productStock;
 	@ColumnDefault("0")
 	private Integer productStatus;
-	private String photoUrl;
+	private List<String> photoUrl = new ArrayList<>();
 	@JsonIgnore
 	private int supplierId;
 	private int purchases;

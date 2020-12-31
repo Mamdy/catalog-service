@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Service
 @Transactional
@@ -41,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
 		//p.setFile(file);
 		//p.setPhoto(file.getBytes());
 		p.setFileName(fileName);
-		p.setPhotoUrl(fileName);
+		p.setPhotoUrl(Collections.singletonList(fileName));
 		p.setCategory(category);
 		p.setActive(true);
 		p.setSupplierId(1);
@@ -90,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
 		p.setFile(file);
 		p.setPhoto(file.getBytes());
 		p.setFileName(fileName);
-		p.setPhotoUrl(fileName);
+		p.setPhotoUrl(Collections.singletonList(fileName));
 		p.setCategory(category);
 		p.setActive(true);
 		p.setSupplierId(1);
@@ -115,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
 		p.setFile(file);
 		p.setFileName(file.getOriginalFilename());
 		p.setPhoto(file.getBytes());
-		p.setPhotoUrl(file.getOriginalFilename());
+		p.setPhotoUrl(Collections.singletonList(file.getOriginalFilename()));
 		p.setCategory(category);
 		p.setActive(true);
 		p.setSupplierId(1);
