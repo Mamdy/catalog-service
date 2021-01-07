@@ -9,6 +9,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,9 +17,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Document
 @Data
@@ -58,6 +57,8 @@ public class Product {
 	@ColumnDefault("0")
 	private Integer productStatus;
 	private List<String> photoUrl = new ArrayList<>();
+	@DBRef
+	private Set<Photo> photos = new HashSet<>();
 	@JsonIgnore
 	private int supplierId;
 	private int purchases;
@@ -68,7 +69,8 @@ public class Product {
 	@Transient
 	private MultipartFile file;
 
-
+	@JsonIgnore
+	@DBRef
 	private Category category;
 
 }

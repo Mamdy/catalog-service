@@ -1,181 +1,198 @@
 package com.mamdy.web;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mamdy.dao.CategoryRepository;
+import com.mamdy.dao.PhotoRepository;
 import com.mamdy.dao.ProductRepository;
 import com.mamdy.entites.Category;
+import com.mamdy.entites.Photo;
 import com.mamdy.entites.Product;
 import com.mamdy.soa.ProductService;
 import com.mamdy.utils.FileUploadUtility;
-import com.mamdy.utils.Response;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RestController
 @RequestMapping("")
+@Slf4j
 public class CatalogueController {
-	@Autowired
-	private ProductService productService;
-	@Autowired
 	private CategoryRepository categoryRepository;
-	
-	@Autowired
 	private ProductRepository productRepository;
+	private PhotoRepository photoRepository;
 
-	@Autowired
-	ServletContext context;
+	Set<Photo> productPhotos = new HashSet<>();
 
-	//@PostMapping("/saveProductInserverAndDataBaseWithFileUploadUtility")
-	public Map<String, Set<String>> CreateProduct(@Valid @RequestBody ProductFormData productFormData, BindingResult result) {
-		
- 		if(result.hasErrors()) {
-			throw new ValidationException("Le Formulaire contient une erreurs");
+	Integer i = 0;
+
+	public CatalogueController(ProductService productService, CategoryRepository categoryRepository, ProductRepository productRepository, PhotoRepository photoRepository) {
+		this.categoryRepository = categoryRepository;
+		this.productRepository = productRepository;
+		this.photoRepository = photoRepository;
+	}
+
+	@PostMapping("/upload/saveProductInserverAndDataBaseWithFileUploadUtility")
+	public ResponseEntity<Photo> uploaImage(
+			@Valid @RequestParam("imageFile") final MultipartFile file
+	) throws IOException {
+
+		log.info("Original Image Byte Size -" + file.getBytes().length);
+		Photo photo = new Photo();
+		photo.setName(file.getOriginalFilename());
+		photo.setType(file.getContentType());
+		photo.setImg(FileUploadUtility.compressBytes(file.getBytes()));
+		photo = photoRepository.save(photo);
+		return ResponseEntity.ok(photo);
+
+	}
+
+	@GetMapping(path = { "/image/{imageName}" })
+	public Photo getProductPhoto(@PathVariable("imageName") String imageName){
+		Photo photoRetrieve = photoRepository.findByName(imageName);
+		Photo newPhoto = new Photo();
+		if(photoRetrieve!=null){
+			newPhoto.setName(photoRetrieve.getName());
+			newPhoto.setType(photoRetrieve.getType());
+			newPhoto.setImg(FileUploadUtility.decompressBytes(photoRetrieve.getImg()));
+
 		}
-		
-		Map<String, Set<String>> errors = new HashMap<>();
-//
-//		for (FieldError fieldError : result.getFieldErrors()) {
-//			String code = fieldError.getCode();
-//			String field = fieldError.getField();
-//			if (code.equals("NotBlank") || code.equals("NotNull")) {
-//				errors.computeIfAbsent(field, key -> new HashSet<>()).add("required");
-//			} else if (code.equals("Email") && field.equals("email")) {
-//				errors.computeIfAbsent(field, key -> new HashSet<>()).add("pattern");
-//			} else if (code.equals("Min") && field.equals("price")) {
-//				errors.computeIfAbsent(field, key -> new HashSet<>()).add("le prix ne doit pas etre inferieur à 1");
-//			} else if (code.equals("Min") && field.equals("quantity")) {
-//				errors.computeIfAbsent(field, key -> new HashSet<>()).add("le prix ne doit pas etre inferieur à 1");
-//			}
-//
-//			else if (code.equals("Size") && field.equals("name")) {
-//				if (productFormData.getName().length() < 2) {
-//					errors.computeIfAbsent(field, key -> new HashSet<>()).add("minlength");
-//				} else {
-//					errors.computeIfAbsent(field, key -> new HashSet<>()).add("maxlength");
-//				}
-//			} 
-//			
-////			else if (code.equals("Size") && field.equals("brand")) {
-////				if (productFormData.getName().length() < 2) {
-////					errors.computeIfAbsent(field, key -> new HashSet<>()).add("minlength");
-////				} else {
-////					errors.computeIfAbsent(field, key -> new HashSet<>()).add("maxlength");
-////				}
-////			}
-//		}
+		return  newPhoto;
+	}
 
-		if (errors.isEmpty()) {
-			System.out.println(productFormData);
+	@GetMapping("/photos")
+	public Collection<Photo> getPhotos(){
+		Collection<Photo> photos = photoRepository.findAll();
+		photos.forEach(photo -> {
+			photo.setImg(FileUploadUtility.decompressBytes(photo.getImg()));
+		});
+		return photos;
+	}
+
+	@GetMapping(path = { "/photos/{id}" })
+	public Collection<Photo> getProductPhotos(@PathVariable("id") String id){
+		Collection<Photo> photos = null;
+		Product retrievedProduct = productRepository.findById(id).get();
+		if(retrievedProduct!=null){
+			photos = retrievedProduct.getPhotos();
+			photos.forEach(photo-> {
+				photo.setImg(FileUploadUtility.decompressBytes(photo.getImg()));
+
+			});
+		}
+		return  photos;
+	}
+
+	// Test avec ma classe Utilitaire
+	@PostMapping("/saveProduct")
+	public Product saveProduct(@RequestBody final ProductFormData productFormData) throws IOException {
+		//on map notre objet de la requête
+		//ProductFormData productFormData = new ObjectMapper().readValue(formProduct, ProductFormData.class);
+		//on recupère la liste des photos du produits
+		List<String> imagesNames = productFormData.getFilesNames();
+		productPhotos.clear();
+		for (String imageName : imagesNames) {
+			productPhotos.add(photoRepository.findByName(imageName));
 		}
 
-		// enregistrement des images dans le serveur
-		/*String fileName = productFormData.getFile().getOriginalFilename();
-		String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "."
-				+ FilenameUtils.getExtension(fileName);*/
 
-		Category c = categoryRepository.findByName(productFormData.getCategory());
+		Category c = categoryRepository.findByName(productFormData.getRegisterFormData().getCategory());
 		if (c != null) {
-			try {
-				Product dbProduct = productService.saveProductInServerAndDataBase(productFormData.getName(),
-						productFormData.getMarque(), productFormData.getDescription(), productFormData.getPrice(),
-						//productFormData.getQuantity(), productFormData.getFile(), modifiedFileName, c);
-						productFormData.getQuantity(), null, c);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			Product p = new Product();
+			p.setName(productFormData.getRegisterFormData().getName());
+			p.setBrand(productFormData.getRegisterFormData().getMarque());
+			p.setDescription(productFormData.getRegisterFormData().getDescription());
+			p.setPrice(productFormData.getRegisterFormData().getPrice());
+			p.setQuantity(productFormData.getRegisterFormData().getQuantity());
+			p.setProductStock(productFormData.getRegisterFormData().getQuantity());
+			p.setCategory(c);
+			p.setAvailable(true);
+			p.setActive(true);
+			p.setSupplierId(1);
+			p.setPhotos(productPhotos);
+			p= productRepository.save(p);
+
+			if (p != null) {
+				//mise à jour de la liste des produits de la categorie c
+			c.getProducts().add(p);
+			categoryRepository.save(c);
+				Product finalP = p;
+
+				//changer les noms initiaux des photos par le prefixe nom du nouveau produit
+				productPhotos.forEach(photo-> {
+					String extension = FilenameUtils.getExtension(photo.getName());
+					String fileName = finalP.getName() + (i) + "_" + System.currentTimeMillis()+ "." +extension;
+					photo.setName(fileName);
+					//creer le lien entre la photo et son produit
+					photo.setProduct(finalP);
+					photoRepository.save(photo);
+					i++;
+				});
+
+				return finalP;
 			}
-//			if (dbProduct != null) {
-//				if (!dbProduct.getFile().getOriginalFilename().equals("")) {
+		}
+
+		return null;
+	}
+
+
+	// Test avec ma classe Utilitaire
+//	@PostMapping("/saveProductInserverAndDataBaseWithFileUploadUtility")
+//	public ResponseEntity<Response> saveProductInserverFileUploadUtiliy(
+//			@Valid @RequestParam("file") final MultipartFile file,
+//			@Valid @RequestParam("formProduct") final String formProduct,
+//			HttpServletRequest request) throws JsonParseException, JsonMappingException, IOException {
+//		ProductFormData productFormData = new ObjectMapper().readValue(formProduct, ProductFormData.class);
+//		// new ProductFormValidator().validate(productFormData, null);
+//		// verification des erreur
 //
+//
+//		// enregistrement des images dans le serveur
+//		String fileName = file.getOriginalFilename();
+//		String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "."
+//				+ FilenameUtils.getExtension(fileName);
+//
+//		log.info("Original Image Byte Size -" + file.getBytes().length);
+//
+//		//on enregistre d'abord la photo en base
+//		Photo photo = new Photo();
+//		photo.setName(file.getOriginalFilename());
+//		photo.setType(file.getContentType());
+//		photo.setImg(FileUploadUtility.compressBytes(file.getBytes()));
+//		photoRepository.save(photo);
+//
+//		//puis on enregistre le produit en base
+//		Category c = categoryRepository.findByName(productFormData.getCategory());
+//		if (c != null) {
+//			Product dbProduct = productService.saveProductInServerAndDataBase(productFormData.getName(),
+//					productFormData.getMarque(), productFormData.getDescription(), productFormData.getPrice(),
+//					productFormData.getQuantity(), file, modifiedFileName, c);
+//			if (dbProduct != null) {
+//				if (dbProduct.getFile()!=null) {
+//					//uploader notre fichier dans le server
 //					FileUploadUtility.uplaodFile(request, dbProduct.getFile(), dbProduct.getId());
 //					return new ResponseEntity<Response>(new Response("Product is Saved Successfully"), HttpStatus.OK);
 //				}
 //			} else {
 //				return new ResponseEntity<Response>(new Response("Product is Not Saved"), HttpStatus.BAD_REQUEST);
 //			}
-		}
-		return errors;
-
-
-	}
-
-	// Test avec ma classe Utilitaire
-	@PostMapping("/saveProduct")
-	public ResponseEntity<Response> saveProduct(@RequestBody final String formProduct) throws IOException {
-		ProductFormData productFormData = new ObjectMapper().readValue(formProduct, ProductFormData.class);
-
-		Category c = categoryRepository.findByName(productFormData.getCategory());
-		if (c != null) {
-			Product dbProduct = productService.saveProduct(productFormData.getName(),
-					productFormData.getMarque(), productFormData.getDescription(), productFormData.getPrice(),
-					productFormData.getQuantity(), c);
-			if (dbProduct != null) {
-				return new ResponseEntity<Response>(new Response("Product is Saved Successfully"), HttpStatus.OK);
-			}
-
-
-		}
-
-		return null;
-	}
-
-
-	// Test avec ma classe Utilitaire
-	@PostMapping("/saveProductInserverAndDataBaseWithFileUploadUtility")
-	public ResponseEntity<Response> saveProductInserverFileUploadUtiliy(
-			@Valid @RequestParam("file") final MultipartFile file,
-			@Valid @RequestParam("formProduct") final String formProduct,
-			HttpServletRequest request) throws JsonParseException, JsonMappingException, IOException {
-		ProductFormData productFormData = new ObjectMapper().readValue(formProduct, ProductFormData.class);
-		// new ProductFormValidator().validate(productFormData, null);
-		// verification des erreur
-	
-
-		// enregistrement des images dans le serveur
-		String fileName = file.getOriginalFilename();
-		String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "."
-				+ FilenameUtils.getExtension(fileName);
-
-		Category c = categoryRepository.findByName(productFormData.getCategory());
-		if (c != null) {
-			Product dbProduct = productService.saveProductInServerAndDataBase(productFormData.getName(),
-					productFormData.getMarque(), productFormData.getDescription(), productFormData.getPrice(),
-					productFormData.getQuantity(), file, modifiedFileName, c);
-			if (dbProduct != null) {
-				if (!dbProduct.getFile().getOriginalFilename().equals("")) {
-					//uploader notre fichier dans le server
-					FileUploadUtility.uplaodFile(request, dbProduct.getFile(), dbProduct.getId());
-					return new ResponseEntity<Response>(new Response("Product is Saved Successfully"), HttpStatus.OK);
-				}
-			} else {
-				return new ResponseEntity<Response>(new Response("Product is Not Saved"), HttpStatus.BAD_REQUEST);
-			}
-		}
-
-		return null;
-
-	}
+//		}
+//
+//		return null;
+//
+//	}
 
 
 	@GetMapping(value = "/searchKeyWord")
@@ -189,167 +206,11 @@ public class CatalogueController {
 	}
 
 
-	/*@PostMapping("/saveProduct")
-	public ResponseEntity<Response> saveProduct(@RequestParam("file") MultipartFile file,
-			@RequestParam("formProduct") String formProduct)
-			throws JsonParseException, JsonMappingException, IOException {
-		ProductFormData productFormData = new ObjectMapper().readValue(formProduct, ProductFormData.class);
-		Category c = categoryRepository.findByName(productFormData.getCategory());
-		if (c != null) {
-			Product dbProduct = productService.saveProduct(productFormData.getName(), productFormData.getMarque(),
-					productFormData.getDescription(), productFormData.getPrice(), productFormData.getQuantity(), file,
-					c);
-			if (dbProduct != null) {
-				return new ResponseEntity<Response>(new Response("Product is Saved Successfully"), HttpStatus.OK);
-			} else {
-				return new ResponseEntity<Response>(new Response("Product is Not Saved"), HttpStatus.BAD_REQUEST);
-			}
-		}
-
-		return null;
-
-	}*/
-
-/*	@PostMapping("/saveProductInserverAndDataBase")
-	public ResponseEntity<Response> saveProductInserver(@RequestParam("file") MultipartFile file,
-			@RequestParam("formProduct") String formProduct)
-			throws JsonParseException, JsonMappingException, IOException {
-		ProductFormData productFormData = new ObjectMapper().readValue(formProduct, ProductFormData.class);
-		boolean isExistProductDirectory = new File(context.getRealPath("/productfolder")).exists();
-		if (!isExistProductDirectory) {
-			new File(context.getRealPath("/productfolder")).mkdir();
-		}
-
-		// enregistrement des images dans le serveur
-		String fileName = file.getOriginalFilename();
-		String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "."
-				+ FilenameUtils.getExtension(fileName);
-		File serverFile = new File(context.getRealPath("productfolder/" + File.separator + modifiedFileName));
-		try {
-			FileUtils.writeByteArrayToFile(serverFile, file.getBytes());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		Category c = categoryRepository.findByName(productFormData.getCategory());
-		if (c != null) {
-			Product dbProduct = productService.saveProductInServerAndDataBase(productFormData.getName(),
-					productFormData.getMarque(), productFormData.getDescription(), productFormData.getPrice(),
-					productFormData.getQuantity(), file, modifiedFileName, c);
-			if (dbProduct != null) {
-				return new ResponseEntity<Response>(new Response("Product is Saved Successfully"), HttpStatus.OK);
-			} else {
-				return new ResponseEntity<Response>(new Response("Product is Not Saved"), HttpStatus.BAD_REQUEST);
-			}
-		}
-
-		return null;
-
-	}
-*/
-
-
-	// Test avec ma classe Utilitaire
-//	@PostMapping("/saveProductInserverAndDataBaseWithFileUploadUtilitycsd")
-//	public Map<String, Set<String>> saveProductInserverFileUploadUtiliye(
-//			@Valid @RequestParam("file") final MultipartFile file,
-//			@Valid @RequestParam("formProduct") final String formProduct, BindingResult results,
-//			HttpServletRequest request, Model model) throws JsonParseException, JsonMappingException, IOException {
-//		ProductFormData productFormData = new ObjectMapper().readValue(formProduct, ProductFormData.class);
-//		// new ProductFormValidator().validate(productFormData, null);
-//		// verification des erreur
-////		if(results.hasErrors()) {
-////			model.addAttribute("userCliqueMangementProduct", true);
-////			model.addAttribute("title", "Manage Product");
-////			return "Page";
-////		}
-//
-//		Map<String, Set<String>> errors = new HashMap<>();
-//
-//		for (FieldError fieldError : results.getFieldErrors()) {
-//			String code = fieldError.getCode();
-//			String field = fieldError.getField();
-//			if (code.equals("NotBlank") || code.equals("NotNull")) {
-//				errors.computeIfAbsent(field, key -> new HashSet<>()).add("required");
-//			} else if (code.equals("Email") && field.equals("email")) {
-//				errors.computeIfAbsent(field, key -> new HashSet<>()).add("pattern");
-//			} else if (code.equals("Min") && field.equals("price")) {
-//				errors.computeIfAbsent(field, key -> new HashSet<>()).add("le prix ne doit pas etre inferieur à 1");
-//			} else if (code.equals("Min") && field.equals("quantity")) {
-//				errors.computeIfAbsent(field, key -> new HashSet<>()).add("le prix ne doit pas etre inferieur à 1");
-//			}
-//
-//			else if (code.equals("Size") && field.equals("name")) {
-//				if (productFormData.getName().length() < 2) {
-//					errors.computeIfAbsent(field, key -> new HashSet<>()).add("minlength");
-//				} else {
-//					errors.computeIfAbsent(field, key -> new HashSet<>()).add("maxlength");
-//				}
-//			} else if (code.equals("Size") && field.equals("brand")) {
-//				if (productFormData.getName().length() < 2) {
-//					errors.computeIfAbsent(field, key -> new HashSet<>()).add("minlength");
-//				} else {
-//					errors.computeIfAbsent(field, key -> new HashSet<>()).add("maxlength");
-//				}
-//			}
-//		}
-//
-//		if (errors.isEmpty()) {
-//			System.out.println(productFormData);
-//		}
-//
-//		// enregistrement des images dans le serveur
-//		String fileName = file.getOriginalFilename();
-//		String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "."
-//				+ FilenameUtils.getExtension(fileName);
-//
-//		Category c = categoryRepository.findByName(productFormData.getCategory());
-//		if (c != null) {
-//			Product dbProduct = productService.saveProductInServerAndDataBase(productFormData.getName(),
-//					productFormData.getMarque(), productFormData.getDescription(), productFormData.getPrice(),
-//					productFormData.getQuantity(), file, modifiedFileName, c);
-//			if (dbProduct != null) {
-//				if (!dbProduct.getFile().getOriginalFilename().equals("")) {
-//
-//					FileUploadUtility.uplaodFile(request, dbProduct.getFile(), dbProduct.getId());
-//					// return new ResponseEntity<Response>(new Response("Product is Saved
-//					// Successfully"), HttpStatus.OK);
-//				}
-//			} else {
-//				// return new ResponseEntity<Response>(new Response("Product is Not Saved"),
-//				// HttpStatus.BAD_REQUEST);
-//			}
-//		}
-//
-//		return errors;
-//
-//	}
-
-//	@PostMapping("/saveProductInServer")
-//	public ResponseEntity<Response> saveProducter(@RequestBody ProductFormData productFormData)
-//			throws JsonParseException, JsonMappingException, IOException {
-//
-//		Category c = categoryRepository.findByName(productFormData.getCategory());
-//		if (c != null) {
-//			Product dbProduct = productService.saveProduct(productFormData.getName(), productFormData.getMarque(),
-//					productFormData.getDescription(), productFormData.getPrice(), productFormData.getQuantity(),
-//					productFormData.getFile(), c);
-//			if (dbProduct != null) {
-//				return new ResponseEntity<Response>(new Response("Product is Saved Successfully"), HttpStatus.OK);
-//			} else {
-//				return new ResponseEntity<Response>(new Response("Product is Not Saved"), HttpStatus.BAD_REQUEST);
-//			}
-//		}
-//
-//		return null;
-//
-//	}
-
 }
 
 @Data
 class ProductFormData {
-	private String name;
+	/*private String name;
 	private String marque;
 	private String description;
 	private double price;
@@ -357,6 +218,19 @@ class ProductFormData {
 	//private MultipartFile file;
 //	private byte[] photo;
 //	private String fileName;
+	private String category;*/
+	private RegisterFormData registerFormData;
+	private List<String> filesNames = new ArrayList<>();
+
+}
+
+@Data
+class RegisterFormData {
+	private String name;
+	private String marque;
+	private String description;
+	private double price;
+	private int quantity;
 	private String category;
 
 }

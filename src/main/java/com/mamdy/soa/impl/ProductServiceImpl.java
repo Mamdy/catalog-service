@@ -9,6 +9,7 @@ import com.mamdy.enums.ResultEnum;
 import com.mamdy.exception.MyException;
 import com.mamdy.soa.CategoryService;
 import com.mamdy.soa.ProductService;
+import com.mamdy.utils.FileUploadUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,20 +59,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product saveProduct(String name, String brand, String description, double price, int quantity,
-			Category category) throws IOException {
-		Product p = new Product();
-		p.setName(name);
-		p.setBrand(brand);
-		p.setDescription(description);
-		p.setPrice(price);
-		p.setQuantity(quantity);
-		p.setCategory(category);
-		p.setActive(true);
-		p.setSupplierId(1);
-		productRepository.save(p);
+	public Product saveProduct(Product p) throws IOException {
+
+		p = productRepository.save(p);
 		// mise à jour liste des produits du category passé en parametre
-		if (category != null) {
+		Category category = p.getCategory();
+		if (category!= null) {
 			category.getProducts().add(p);
 			category.setActive(true);
 			categoryRepository.save(category);
@@ -89,39 +82,15 @@ public class ProductServiceImpl implements ProductService {
 		p.setPrice(price);
 		p.setQuantity(quantity);
 		p.setFile(file);
-		p.setPhoto(file.getBytes());
+		p.setPhoto(FileUploadUtility.compressBytes(file.getBytes()));
 		p.setFileName(fileName);
 		p.setPhotoUrl(Collections.singletonList(fileName));
+		p.setPhotos(null);
 		p.setCategory(category);
 		p.setActive(true);
 		p.setSupplierId(1);
 		productRepository.save(p);
-		// mise à jour liste des produits du category passé en parametre
-		if (category != null) {
-			category.getProducts().add(p);
-			category.setActive(true);
-			categoryRepository.save(category);
-		}
-		return p;	}
-
-	@Override
-	public Product saveProduct(String name, String brand, String description, double price, int quantity, MultipartFile file, 
-			Category category) throws IOException {
-		Product p = new Product();
-		p.setName(name);
-		p.setBrand(brand);
-		p.setDescription(description);
-		p.setPrice(price);
-		p.setQuantity(quantity);
-		p.setFile(file);
-		p.setFileName(file.getOriginalFilename());
-		p.setPhoto(file.getBytes());
-		p.setPhotoUrl(Collections.singletonList(file.getOriginalFilename()));
-		p.setCategory(category);
-		p.setActive(true);
-		p.setSupplierId(1);
-		productRepository.save(p);
-		// mise à jour liste des produits du category passé en parametre
+		// mise à jour liste des produits du categori passé en parametre
 		if (category != null) {
 			category.getProducts().add(p);
 			category.setActive(true);
@@ -129,6 +98,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return p;
 	}
+
 
 	@Override
 	public void increaseStock(String productId, int amount) {

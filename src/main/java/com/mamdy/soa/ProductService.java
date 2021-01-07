@@ -11,7 +11,7 @@ import java.io.IOException;
 public interface ProductService {
 	//Product saveProduct(Product product,String categoryId);
 	//Product saveProductServerAndDataBase(String name, String marque, String description,  double price, int quantity,String fileName, Category category);
-	Product saveProduct(String name, String brand, String description, double price, int quantity, Category category) throws IOException;
+	Product saveProduct(Product product) throws IOException;
 
 	Product saveProductInServerAndDataBase(String name, String marque, String description, double price, int quantity,
 										   MultipartFile file, String fileName, Category category) throws IOException;
@@ -19,8 +19,6 @@ public interface ProductService {
 	Product saveProductInServerAndDataBase(String name, String marque, String description, double price, int quantity,
 										   String fileName, Category category) throws IOException;
 
-	Product saveProduct(String name, String brand, String description, double price, int quantity, MultipartFile file,
-						Category category) throws IOException;
 
 	// increase stock
 	void increaseStock(String productId, int amount);

@@ -1,6 +1,7 @@
 package com.mamdy.soa;
 
 import com.mamdy.entites.OrderMain;
+import com.mamdy.form.NewAdressForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,6 +17,7 @@ public interface OrderService {
     OrderMain findOne(String orderId);
 
     OrderMain finish(String orderId);
+    OrderMain update(String orderId, NewAdressForm newAdressForm);
 
     OrderMain cancel(String orderId);
 

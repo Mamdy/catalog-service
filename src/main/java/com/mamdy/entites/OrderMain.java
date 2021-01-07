@@ -48,6 +48,10 @@ public class OrderMain {
     @NotEmpty
     private String buyerAddress;
 
+
+    @NotEmpty
+    private String shippingAddress;
+
     // Total Amount
     @NotNull
     private BigDecimal orderAmount;

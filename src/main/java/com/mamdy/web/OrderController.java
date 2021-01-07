@@ -2,6 +2,8 @@ package com.mamdy.web;
 
 import com.mamdy.entites.OrderMain;
 import com.mamdy.entites.ProductInOrder;
+import com.mamdy.form.NewAdressForm;
+import com.mamdy.form.OrderForm;
 import com.mamdy.soa.OrderService;
 import com.mamdy.soa.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,16 @@ public class OrderController {
         return ResponseEntity.ok(orderService.cancel(orderId));
     }
 
+    @PatchMapping("/order/update/{id}")
+    public ResponseEntity<OrderMain> modifyShippingAdresse(@PathVariable("id") String orderId, @RequestBody NewAdressForm newAdressForm,Authentication authentication) {
+        OrderMain orderMain = orderService.findOne(orderId);
+        if (!authentication.getName().equals(orderMain.getBuyerEmail()) && authentication.getAuthorities().contains(new SimpleGrantedAuthority("CUSTOMER"))) {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(orderService.update(orderId,newAdressForm));
+    }
+
     @PatchMapping("/order/finish/{id}")
     public ResponseEntity<OrderMain> finish(@PathVariable("id") String orderId, Authentication authentication) {
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("CUSTOMER"))) {
@@ -55,6 +67,7 @@ public class OrderController {
         }
         return ResponseEntity.ok(orderService.finish(orderId));
     }
+
 
     @GetMapping("/order/{id}")
     public ResponseEntity show(@PathVariable("id") String orderId, Authentication authentication) {

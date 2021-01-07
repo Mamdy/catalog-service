@@ -2,12 +2,17 @@ package com.mamdy;
 
 import com.mamdy.dao.*;
 import com.mamdy.entites.*;
+import com.mamdy.utils.FileUploadUtility;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -22,7 +27,13 @@ public class CatalogServiceApplication {
     }
 
     @Bean
-    CommandLineRunner start(CategoryRepository categoryRepository, ProductRepository productRepository, UserRepository userRepository, CartRepository cartRepository, ProductInOrderRepository productInOrderRepository, ClientRepository clientRepository) {
+    CommandLineRunner start(CategoryRepository categoryRepository,
+                            ProductRepository productRepository,
+                            UserRepository userRepository,
+                            CartRepository cartRepository,
+                            ProductInOrderRepository productInOrderRepository,
+                            ClientRepository clientRepository,
+                            PhotoRepository photoRepository) {
         return args -> {
 
             Set<ProductInOrder> productsInOrders = new HashSet<>();
@@ -40,6 +51,53 @@ public class CatalogServiceApplication {
             AtomicInteger i = new AtomicInteger();
 
 
+            //on enregistre d'abord la photo en base
+            Photo photo = new Photo();
+            MultipartFile file = new MultipartFile() {
+                @Override
+                public String getName() {
+                    return "test";
+                }
+
+                @Override
+                public String getOriginalFilename() {
+                    return "test";
+                }
+
+                @Override
+                public String getContentType() {
+                    return "image/jpg";
+                }
+
+                @Override
+                public boolean isEmpty() {
+                    return false;
+                }
+
+                @Override
+                public long getSize() {
+                    return 1000L;
+                }
+
+                @Override
+                public byte[] getBytes() throws IOException {
+                    return new byte[0];
+                }
+
+                @Override
+                public InputStream getInputStream() throws IOException {
+                    return null;
+                }
+
+                @Override
+                public void transferTo(File file) throws IOException, IllegalStateException {
+
+                }
+            };
+            photo.setName(file.getOriginalFilename());
+            photo.setType(file.getContentType());
+            photo.setImg(FileUploadUtility.compressBytes(file.getBytes()));
+            photo = photoRepository.save(photo);
 
 
             for (String s : Arrays.asList("DELL-Dual-Core", "ASUS-P1", "DELL-P2", "ASUS-P2")) {
@@ -56,6 +114,7 @@ public class CatalogServiceApplication {
                         RandomString.make(5),
                         "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.", Math.random() * 1000, false, false, true, true, (int) (Math.random() * 10), (int) (Math.random() * 10), (int) (Math.random() * 10),
                         productPhotoUrls,
+                        null,
                         (int) (Math.random() * 10),
                         (int) (Math.random() * 10),
                         0,
@@ -65,7 +124,6 @@ public class CatalogServiceApplication {
 
                 c1.getProducts().add(p);
                 categoryRepository.save(c1);
-
 
             }
 
@@ -85,6 +143,7 @@ public class CatalogServiceApplication {
                         "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.", Math.random() * 1000,
                         false, false, true, false, (int) (Math.random() * 10), (int) (Math.random() * 10), (int) (Math.random() * 10),
                         productPhotoUrls,
+                        null,
                         (int) (Math.random() * 10),
                         (int) (Math.random() * 10), 1, null, null, null, c2));
                 //Mise à jour de la categorie c2
@@ -105,6 +164,7 @@ public class CatalogServiceApplication {
                         Math.random() * 1000, false, false, true, true, (int) (Math.random() * 10),
                         (int) (Math.random() * 10), (int) (Math.random() * 10),
                         productPhotoUrls,
+                        null,
                         (int) (Math.random() * 10),
                         (int) (Math.random() * 10),
                         1,
@@ -125,7 +185,9 @@ public class CatalogServiceApplication {
                 Product p = productRepository.save(new Product(null, RandomString.make(5), name,
                         Math.random() * 1000, RandomString.make(5),
                         "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.", Math.random() * 1000, false, false, true, true, (int) (Math.random() * 10), (int) (Math.random() * 10), (int) (Math.random() * 10),
-                        productPhotoUrls, (int) (Math.random() * 10), (int) (Math.random() * 10), 2, null, null, null, c4));
+                        productPhotoUrls,
+                        null,
+                        (int) (Math.random() * 10), (int) (Math.random() * 10), 2, null, null, null, c4));
                 //Mise à jour de la categorie c4
                 c4.getProducts().add(p);
                 categoryRepository.save(c4);
@@ -143,6 +205,7 @@ public class CatalogServiceApplication {
                         "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.", Math.random() * 1000, false, false, true, true, (int) (Math.random() * 10),
                         (int) (Math.random() * 10), (int) (Math.random() * 10),
                         productPhotoUrls,
+                        null,
                         (int) (Math.random() * 10), (int) (Math.random() * 10), 3, null, null, null, c5));
                 //Mise à jour de la categorie c5
                 c5.getProducts().add(p);
@@ -177,7 +240,9 @@ public class CatalogServiceApplication {
 
             }
             Product product = productRepository.save(new Product(null, RandomString.make(5), "P15", Math.random() * 1000, RandomString.make(5), RandomString.make(5), Math.random() * 1000, false, false, true, false, (int) (Math.random() * 10), (int) (Math.random() * 10), (int) (Math.random() * 10),
-                    productPhotoUrls, (int) (Math.random() * 10), (int) (Math.random() * 10), 1, null, null, null, c2));
+                    productPhotoUrls,
+                    null,
+                    (int) (Math.random() * 10), (int) (Math.random() * 10), 1, null, null, null, c2));
             ProductInOrder productInOrder = new ProductInOrder(product, (int) (Math.random() * 10));
             productInOrder.setCart(cart1);
             productInOrder = productInOrderRepository.save(productInOrder);

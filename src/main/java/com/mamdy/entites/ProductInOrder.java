@@ -23,18 +23,13 @@ public class ProductInOrder {
     @Id
     private String id;
 
-
-    //    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-////    @JoinColumn(name = "cart_id")
     @JsonIgnore
     @DBRef
     private Cart cart;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id")
-@DBRef
-@JsonIgnore
-private OrderMain orderMain;
+    @DBRef
+    @JsonIgnore
+    private OrderMain orderMain;
 
     private String productCode;
 

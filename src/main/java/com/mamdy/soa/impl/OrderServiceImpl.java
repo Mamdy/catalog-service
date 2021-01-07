@@ -10,6 +10,7 @@ import com.mamdy.entites.ProductInOrder;
 import com.mamdy.enums.OrderStatusEnum;
 import com.mamdy.enums.ResultEnum;
 import com.mamdy.exception.MyException;
+import com.mamdy.form.NewAdressForm;
 import com.mamdy.soa.OrderService;
 import com.mamdy.soa.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,8 +72,23 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orderMain);
         return orderRepository.findById(orderId);
     }
+    @Override
+    public OrderMain update(String orderId,NewAdressForm newAdressForm) {
+        OrderMain orderMain = findOne(orderId);
+        String shippingAddressee = this.shippingAddress(newAdressForm);
+        orderMain.setShippingAddress(shippingAddressee);
+        orderMain.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
+        orderRepository.save(orderMain);
+        return orderRepository.findById(orderId);
+    }
 
-
+    private String shippingAddress(NewAdressForm newAdressForm ){
+        return newAdressForm.getNom().concat("")
+                + newAdressForm.getPrenom().concat("")
+                + newAdressForm.getAdress().concat("")
+                + newAdressForm.getCodePostale().concat("")
+                + newAdressForm.getPhone();
+    }
     @Override
     public OrderMain cancel(String orderId) {
         OrderMain orderMain = findOne(orderId);
