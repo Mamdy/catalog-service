@@ -57,7 +57,7 @@ public class OrderController {
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(orderService.update(orderId,newAdressForm));
+        return ResponseEntity.ok(orderService.update(orderMain,newAdressForm));
     }
 
     @PatchMapping("/order/finish/{id}")

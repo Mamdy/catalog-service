@@ -113,6 +113,7 @@ public class CartServiceImpl implements CartService {
         order.setCreateTime(LocalDateTime.now());
         order.setProducts(client.getCart().getProductsInOrder());
         order.setNumOrder(numOrder.toUpperCase());
+        order.setShippingAddress(client.getAddress());
 
         order = orderRepository.save(order);
         for (ProductInOrder productInOrder : client.getCart().getProductsInOrder()) {

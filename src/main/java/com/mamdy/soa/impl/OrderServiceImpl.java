@@ -18,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
@@ -73,21 +75,25 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(orderId);
     }
     @Override
-    public OrderMain update(String orderId,NewAdressForm newAdressForm) {
-        OrderMain orderMain = findOne(orderId);
+    public OrderMain update(OrderMain orderMain,NewAdressForm newAdressForm) {
+
         String shippingAddressee = this.shippingAddress(newAdressForm);
         orderMain.setShippingAddress(shippingAddressee);
-        orderMain.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
-        orderRepository.save(orderMain);
-        return orderRepository.findById(orderId);
+        orderMain.setUpdateTime(LocalDateTime.now());
+        orderMain = orderRepository.save(orderMain);
+        return orderRepository.findById(orderMain.getId());
     }
 
     private String shippingAddress(NewAdressForm newAdressForm ){
-        return newAdressForm.getNom().concat("")
-                + newAdressForm.getPrenom().concat("")
-                + newAdressForm.getAdress().concat("")
-                + newAdressForm.getCodePostale().concat("")
-                + newAdressForm.getPhone();
+        return newAdressForm.getNom().concat(" ")
+                + newAdressForm.getPrenom().concat(" ,")
+                + newAdressForm.getNumero().concat(" ")
+                + newAdressForm.getVoie().concat(" ")
+                + newAdressForm.getCodepostal().concat(" ,")
+                + newAdressForm.getVille().concat(" \n")
+                + newAdressForm.getPays().concat(" ,")
+                + newAdressForm.getTelephone()
+                ;
     }
     @Override
     public OrderMain cancel(String orderId) {

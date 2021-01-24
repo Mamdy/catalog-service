@@ -141,7 +141,7 @@ public class CatalogServiceApplication {
                         RandomString.make(5), s, Math.random() * 1000,
                         RandomString.make(5),
                         "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.", Math.random() * 1000,
-                        false, false, true, false, (int) (Math.random() * 10), (int) (Math.random() * 10), (int) (Math.random() * 10),
+                        false, false, true, true, (int) (Math.random() * 10), (int) (Math.random() * 10), (int) (Math.random() * 10),
                         productPhotoUrls,
                         null,
                         (int) (Math.random() * 10),

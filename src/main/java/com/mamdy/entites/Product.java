@@ -58,7 +58,7 @@ public class Product {
 	private Integer productStatus;
 	private List<String> photoUrl = new ArrayList<>();
 	@DBRef
-	private Set<Photo> photos = new HashSet<>();
+	private List<Photo> photos = new ArrayList<>();
 	@JsonIgnore
 	private int supplierId;
 	private int purchases;

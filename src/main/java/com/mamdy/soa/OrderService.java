@@ -17,7 +17,7 @@ public interface OrderService {
     OrderMain findOne(String orderId);
 
     OrderMain finish(String orderId);
-    OrderMain update(String orderId, NewAdressForm newAdressForm);
+    OrderMain update(OrderMain orderMain, NewAdressForm newAdressForm);
 
     OrderMain cancel(String orderId);
 

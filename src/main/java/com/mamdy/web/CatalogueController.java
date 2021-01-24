@@ -10,6 +10,7 @@ import com.mamdy.soa.ProductService;
 import com.mamdy.utils.FileUploadUtility;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.utility.RandomString;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,8 +33,6 @@ public class CatalogueController {
 	private CategoryRepository categoryRepository;
 	private ProductRepository productRepository;
 	private PhotoRepository photoRepository;
-
-	Set<Photo> productPhotos = new HashSet<>();
 
 	Integer i = 0;
 
@@ -101,9 +100,14 @@ public class CatalogueController {
 		//ProductFormData productFormData = new ObjectMapper().readValue(formProduct, ProductFormData.class);
 		//on recupère la liste des photos du produits
 		List<String> imagesNames = productFormData.getFilesNames();
-		productPhotos.clear();
+		List<Photo> productPhotos = new ArrayList<>();
+		Photo photo = null;
 		for (String imageName : imagesNames) {
-			productPhotos.add(photoRepository.findByName(imageName));
+			photo = photoRepository.findByName(imageName);
+			if(photo!=null) {
+				productPhotos.add(photo);
+			}
+
 		}
 
 
@@ -111,6 +115,7 @@ public class CatalogueController {
 		if (c != null) {
 			Product p = new Product();
 			p.setName(productFormData.getRegisterFormData().getName());
+			p.setCode(RandomString.make(5)+System.currentTimeMillis());
 			p.setBrand(productFormData.getRegisterFormData().getMarque());
 			p.setDescription(productFormData.getRegisterFormData().getDescription());
 			p.setPrice(productFormData.getRegisterFormData().getPrice());
@@ -130,13 +135,13 @@ public class CatalogueController {
 				Product finalP = p;
 
 				//changer les noms initiaux des photos par le prefixe nom du nouveau produit
-				productPhotos.forEach(photo-> {
-					String extension = FilenameUtils.getExtension(photo.getName());
+				productPhotos.forEach(img-> {
+					String extension = FilenameUtils.getExtension(img.getName());
 					String fileName = finalP.getName() + (i) + "_" + System.currentTimeMillis()+ "." +extension;
-					photo.setName(fileName);
+					img.setName(fileName);
 					//creer le lien entre la photo et son produit
-					photo.setProduct(finalP);
-					photoRepository.save(photo);
+					img.setProduct(finalP);
+					photoRepository.save(img);
 					i++;
 				});
 

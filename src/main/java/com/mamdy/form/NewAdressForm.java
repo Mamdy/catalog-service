@@ -8,9 +8,13 @@ import java.util.List;
 
 @Data
 public class NewAdressForm {
-    private String Nom;
+    private String nom;
     private String prenom;
-    private String adress;
-    private String codePostale;
-    private String phone;
+    private String numero;
+    private String voie;
+    private String codepostal;
+    private String ville;
+    private String pays;
+    private String telephone;
+
 }
