@@ -51,7 +51,9 @@ public class OrderController {
     }
 
     @PatchMapping("/order/update/{id}")
-    public ResponseEntity<OrderMain> modifyShippingAdresse(@PathVariable("id") String orderId, @RequestBody NewAdressForm newAdressForm,Authentication authentication) {
+    public ResponseEntity<OrderMain> modifyShippingAdresse(@PathVariable("id") String orderId,
+                                                           @RequestBody NewAdressForm newAdressForm,
+                                                           Authentication authentication) {
         OrderMain orderMain = orderService.findOne(orderId);
         if (!authentication.getName().equals(orderMain.getBuyerEmail()) && authentication.getAuthorities().contains(new SimpleGrantedAuthority("CUSTOMER"))) {
 

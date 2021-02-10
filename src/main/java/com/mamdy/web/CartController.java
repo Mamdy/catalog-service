@@ -12,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.security.Principal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -71,10 +69,15 @@ public class CartController {
     }
 
     @GetMapping("")
-    public Set<ProductInOrder> getCart(Principal principal) {
-        Client client = clientRepository.findByUsername(principal.getName().toLowerCase());
-        Set<ProductInOrder> productInOrders = client.getCart().getProductsInOrder();
-        return productInOrders;
+    public Cart getCart(Principal principal) {
+        Optional<Client> customer = Optional.ofNullable(clientRepository.findByUsername(principal.getName().toLowerCase()));
+        if(customer.isPresent()) {
+            final Cart cart = customer.get().getCart();
+            return cart;
+        }
+        return null;
+        /*Set<ProductInOrder> productInOrders = client.getCart().getProductsInOrder();
+        return productInOrders;*/
     }
 
 
@@ -107,11 +110,9 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity checkout(Principal principal) {
+    public OrderMain checkout(Principal principal) {
         Client client = clientRepository.findByUsername(principal.getName().toLowerCase());
-
-        cartService.checkout(client);
-        return ResponseEntity.ok(null);
+        return cartService.checkout(client);
     }
 
 

@@ -75,7 +75,9 @@ public class OrderMain {
         this.buyerName = customerFullName;
         this.buyerPhone = buyer.getPhone();
         this.buyerAddress = buyer.getAddress();
-        this.orderAmount = buyer.getCart().getProductsInOrder().stream().map(item -> item.getProductPrice().multiply(new BigDecimal(item.getCount())))
+        this.orderAmount = buyer.getCart().getProductsInOrder()
+                .stream().map(item -> item.getProductPrice()
+                .multiply(new BigDecimal(item.getCount())))
                 .reduce(BigDecimal::add)
                 .orElse(new BigDecimal(0));
         this.orderStatus = 0;

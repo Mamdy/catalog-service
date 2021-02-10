@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -46,8 +47,9 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void mergeLocalCart(Collection<ProductInOrder> productInOrders, Client client) {
-        //on recupre le panier du client et on y ajoute le/les nouveaux produits à commander
-        Cart finalCart = client.getCart();
+        //on recupère le panier du client et on y ajoute le/les nouveaux produits à commander
+        /*Optional<Cart> finalCart = Optional.ofNullable(client.getCart());
+
         if (finalCart == null) {
             finalCart = new Cart();
             finalCart.setProductsInOrder(new HashSet<>());
@@ -65,11 +67,11 @@ public class CartServiceImpl implements CartService {
             });
             cartRepository.save(finalCart1);
 
-        }
-
-        Cart finalCart1 = finalCart;
+        }*/
+        Optional<Cart> finalCart = Optional.ofNullable(client.getCart());
+        finalCart.ifPresent(fc->{
             productInOrders.forEach(productInOrder -> {
-                Set<ProductInOrder> set = finalCart1.getProductsInOrder();
+                Set<ProductInOrder> set = fc.getProductsInOrder();
 
                 Optional<ProductInOrder> old = set.stream().filter(e -> e.getProductCode().
                         equals(productInOrder.getProductCode())).findFirst();
@@ -79,13 +81,15 @@ public class CartServiceImpl implements CartService {
                     prod.setCount(productInOrder.getCount() + prod.getCount());
                 } else {
                     prod = productInOrder;
-                    prod.setCart(finalCart1);
-                    finalCart1.getProductsInOrder().add(prod);
+                    prod.setCart(fc);
+                    fc.getProductsInOrder().add(prod);
                 }
                 productInOrderRepository.save(prod);
             });
+            cartRepository.save(fc);
+        });
 
-            cartRepository.save(finalCart1);
+
     }
 
     @Override
@@ -98,16 +102,20 @@ public class CartServiceImpl implements CartService {
         productInOrder.ifPresent(productInOrder1 -> {
             productInOrder1.setCart(null);
             productInOrderRepository.deleteById(productInOrder1.getId());
+            //il faut effacer sa reference dans son panier
+            Cart finalCart = client.getCart();
+            finalCart.getProductsInOrder().remove(productInOrder1);
+            cartRepository.save(finalCart);
+
         });
 
     }
 
     @Override
     @Transactional
-    public void checkout(Client client) {
+    public OrderMain checkout(Client client) {
         final LocalDateTime ldt = LocalDateTime.now();
         String numOrder = this.generateNumOrder(ldt);
-        numOrder = numOrder + client.getFirstName().substring(0,3);
 
         OrderMain order = new OrderMain(client);
         order.setCreateTime(LocalDateTime.now());
@@ -117,7 +125,7 @@ public class CartServiceImpl implements CartService {
 
         order = orderRepository.save(order);
         for (ProductInOrder productInOrder : client.getCart().getProductsInOrder()) {
-            //on vide la le panier du client
+            //on vide le panier du client
             productInOrder.setCart(null);
             productInOrder.setOrderMain(order);
             Cart cart = client.getCart();
@@ -128,7 +136,7 @@ public class CartServiceImpl implements CartService {
             productInOrderRepository.save(productInOrder);
 
         }
-
+        return  order;
 
     }
 

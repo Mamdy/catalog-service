@@ -63,7 +63,7 @@ public class PaymentService {
     }
 
     public PaymentIntent confirm(String id, String orderId, String customerMail) throws StripeException, MailjetSocketTimeoutException {
-        String customerName = clientRepository.findByUsername(customerMail).getFirstName();
+        Client customer = clientRepository.findByUsername(customerMail);
         Stripe.apiKey = secretKey;
         PaymentIntent paymentIntent = PaymentIntent.retrieve(id);
         Map<String, Object> params = new HashMap<>();
@@ -77,20 +77,19 @@ public class PaymentService {
                 MailJetUtils.sendEmail(
                         "balphamamoudou2013@gmail.com",
                         customerMail,
-                        "No reply,Votre Commande ",
-                        "Bonjour " + customerName + ",\n Votre Commande numéro: " + order.getNumOrder() + " vient d'être valider sur notre Site. \n" +
-                                "et vou sera expedier dans les bref delais. \n" +
-                                "Merci pour votre Confiance," +
-                                " et à Bientot",
+                        order.getNumOrder(),
+                        "Confirmation Commande ",
+                        "Bonjour " + customer.getFirstName(),
                         mailjetPublicKey,
                         mailjetSecretKey
                 );
                 //vider le panier du client en base pour ce/ces productsInOrderes commandés et mettre à jour le stock des produits restant
-                Client customer = this.clientRepository.findByUsername(order.getBuyerEmail());
+
                 Set<ProductInOrder> setPio = order.getProducts();
                 setPio.forEach(productInOrder -> {
                     this.productService.decreaseStock(productInOrder.getProductCode(), productInOrder.getCount());
-                    //productInOrderRepository.deleteById(productInOrder.getId()); à revoir niveau conception si necessaire ou pas
+                    //supprimer les produits commandé du panier
+                    this.cartService.delete(productInOrder.getProductCode(), customer);
                 });
             }
 

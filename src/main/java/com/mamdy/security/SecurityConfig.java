@@ -49,28 +49,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/categories/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/products/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/home/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/resetPassword/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/images/**").permitAll();
        // http.authorizeRequests().antMatchers(HttpMethod.GET, "/order/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/searchKeyWord/**").permitAll();
         http.authorizeRequests().antMatchers("/categories/**").hasAnyAuthority("CUSTOMER", "ADMIN");
         http.authorizeRequests().antMatchers("/products/**").hasAnyAuthority("CUSTOMER", "ADMIN");
-       // http.authorizeRequests().antMatchers("/cart/add").permitAll();
         http.authorizeRequests().antMatchers("/cart/**").permitAll();
-        // http.authorizeRequests().antMatchers("/order/**").permitAll();
-        /*http.authorizeRequests().antMatchers("/payment/paymentintent/**").hasAnyAuthority("CUSTOMER");
-        http.authorizeRequests().antMatchers("/payment/confirm/**").hasAnyAuthority("CUSTOMER");
-        //http.authorizeRequests().antMatchers("/order/**").authenticated();
-        http.authorizeRequests().antMatchers("/order/finish/**").hasAnyAuthority("CUSTOMER", "ADMIN");*/
-
-
-        //        http.authorizeRequests().antMatchers(HttpMethod.GET,"/cart/**").permitAll();
-//        http.authorizeRequests().antMatchers(HttpMethod.GET,"/cart/add/**").permitAll();http.authorizeRequests().antMatchers("/categories/**").hasAuthority("ADMIN");
 
         http.authorizeRequests().anyRequest().authenticated();
-//        http.authorizeRequests().antMatchers("/cart/add/**").hasAnyAuthority("ROLE_CUSTOMER","ADMIN");
 //        //pour toutes autres requête il faut etre authentifier pour pouvoir les executer.
 
         //http.addFilter(new JWTAuthenticationFilter(authenticationManager()));
-        //Mise en place d'un filtre qui va filter la requête(voior si elle contient le token si oui il la signe numeriquement)
+        //Mise en place d'un filtre qui va filter la requête(voir si elle contient le token si oui il la signe numeriquement)
         http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // http.authorizeRequests().anyRequest().permitAll();

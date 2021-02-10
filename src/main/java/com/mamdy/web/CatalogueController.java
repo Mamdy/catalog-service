@@ -1,18 +1,22 @@
 package com.mamdy.web;
 
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.mamdy.dao.CategoryRepository;
+import com.mamdy.dao.ClientRepository;
 import com.mamdy.dao.PhotoRepository;
 import com.mamdy.dao.ProductRepository;
 import com.mamdy.entites.Category;
+import com.mamdy.entites.Client;
 import com.mamdy.entites.Photo;
 import com.mamdy.entites.Product;
 import com.mamdy.soa.ProductService;
 import com.mamdy.utils.FileUploadUtility;
+import com.mamdy.utils.MailJetUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +24,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
@@ -28,18 +31,28 @@ import java.util.*;
 @Controller
 @RestController
 @RequestMapping("")
+@CrossOrigin("*")
 @Slf4j
 public class CatalogueController {
+
+	@Value("${mailjet.key.public}")
+	String mailjetPublicKey;
+
+	@Value("${mailjet.key.secret}")
+	String mailjetSecretKey;
+
 	private CategoryRepository categoryRepository;
 	private ProductRepository productRepository;
 	private PhotoRepository photoRepository;
+	private ClientRepository clientRepository;
 
 	Integer i = 0;
 
-	public CatalogueController(ProductService productService, CategoryRepository categoryRepository, ProductRepository productRepository, PhotoRepository photoRepository) {
+	public CatalogueController(ProductService productService, CategoryRepository categoryRepository, ProductRepository productRepository, PhotoRepository photoRepository, ClientRepository clientRepository) {
 		this.categoryRepository = categoryRepository;
 		this.productRepository = productRepository;
 		this.photoRepository = photoRepository;
+		this.clientRepository = clientRepository;
 	}
 
 	@PostMapping("/upload/saveProductInserverAndDataBaseWithFileUploadUtility")
@@ -57,21 +70,21 @@ public class CatalogueController {
 
 	}
 
-	@GetMapping(path = { "/image/{imageName}" })
-	public Photo getProductPhoto(@PathVariable("imageName") String imageName){
+	@GetMapping(path = {"/image/{imageName}"})
+	public Photo getProductPhoto(@PathVariable("imageName") final String imageName) {
 		Photo photoRetrieve = photoRepository.findByName(imageName);
 		Photo newPhoto = new Photo();
-		if(photoRetrieve!=null){
+		if (photoRetrieve != null) {
 			newPhoto.setName(photoRetrieve.getName());
 			newPhoto.setType(photoRetrieve.getType());
 			newPhoto.setImg(FileUploadUtility.decompressBytes(photoRetrieve.getImg()));
 
 		}
-		return  newPhoto;
+		return newPhoto;
 	}
 
 	@GetMapping("/photos")
-	public Collection<Photo> getPhotos(){
+	public Collection<Photo> getPhotos() {
 		Collection<Photo> photos = photoRepository.findAll();
 		photos.forEach(photo -> {
 			photo.setImg(FileUploadUtility.decompressBytes(photo.getImg()));
@@ -79,18 +92,18 @@ public class CatalogueController {
 		return photos;
 	}
 
-	@GetMapping(path = { "/photos/{id}" })
-	public Collection<Photo> getProductPhotos(@PathVariable("id") String id){
+	@GetMapping(path = {"/photos/{id}"})
+	public Collection<Photo> getProductPhotos(@PathVariable("id") String id) {
 		Collection<Photo> photos = null;
 		Product retrievedProduct = productRepository.findById(id).get();
-		if(retrievedProduct!=null){
+		if (retrievedProduct != null) {
 			photos = retrievedProduct.getPhotos();
-			photos.forEach(photo-> {
+			photos.forEach(photo -> {
 				photo.setImg(FileUploadUtility.decompressBytes(photo.getImg()));
 
 			});
 		}
-		return  photos;
+		return photos;
 	}
 
 	// Test avec ma classe Utilitaire
@@ -104,7 +117,7 @@ public class CatalogueController {
 		Photo photo = null;
 		for (String imageName : imagesNames) {
 			photo = photoRepository.findByName(imageName);
-			if(photo!=null) {
+			if (photo != null) {
 				productPhotos.add(photo);
 			}
 
@@ -113,12 +126,16 @@ public class CatalogueController {
 
 		Category c = categoryRepository.findByName(productFormData.getRegisterFormData().getCategory());
 		if (c != null) {
+			double price = productFormData.getRegisterFormData().getPrice();
+			double currentPrice = price-(price * 0.3);
+
 			Product p = new Product();
 			p.setName(productFormData.getRegisterFormData().getName());
-			p.setCode(RandomString.make(5)+System.currentTimeMillis());
+			p.setCode(RandomString.make(5) + System.currentTimeMillis());
 			p.setBrand(productFormData.getRegisterFormData().getMarque());
 			p.setDescription(productFormData.getRegisterFormData().getDescription());
 			p.setPrice(productFormData.getRegisterFormData().getPrice());
+			p.setCurrentPrice(currentPrice);
 			p.setQuantity(productFormData.getRegisterFormData().getQuantity());
 			p.setProductStock(productFormData.getRegisterFormData().getQuantity());
 			p.setCategory(c);
@@ -126,18 +143,18 @@ public class CatalogueController {
 			p.setActive(true);
 			p.setSupplierId(1);
 			p.setPhotos(productPhotos);
-			p= productRepository.save(p);
+			p = productRepository.save(p);
 
 			if (p != null) {
 				//mise à jour de la liste des produits de la categorie c
-			c.getProducts().add(p);
-			categoryRepository.save(c);
+				c.getProducts().add(p);
+				categoryRepository.save(c);
 				Product finalP = p;
 
 				//changer les noms initiaux des photos par le prefixe nom du nouveau produit
-				productPhotos.forEach(img-> {
+				productPhotos.forEach(img -> {
 					String extension = FilenameUtils.getExtension(img.getName());
-					String fileName = finalP.getName() + (i) + "_" + System.currentTimeMillis()+ "." +extension;
+					String fileName = finalP.getName() + (i) + "_" + System.currentTimeMillis() + "." + extension;
 					img.setName(fileName);
 					//creer le lien entre la photo et son produit
 					img.setProduct(finalP);
@@ -211,7 +228,24 @@ public class CatalogueController {
 	}
 
 
+	@GetMapping(path = {"/resetPassword/{email}"})
+	public boolean sendResetPasswordLink(@PathVariable("email") final String email) throws MailjetSocketTimeoutException {
+		Client client = this.clientRepository.findByEmail(email);
+		if (client != null) {
+			MailJetUtils.sendResetPasswordLink(
+					"balphamamoudou2013@gmail.com",
+					client.getEmail(),
+					"No reply GN-LOUMOSTORE: Réinitialisation de votre mot de passe",
+					" Bonjour " + client.getFirstName() + ", \n",
+					mailjetPublicKey,
+					mailjetSecretKey
+
+			);
+			return true;
+		} else throw new RuntimeException("Cette adresse e-mail n'existe pas dans notre base de données");
+	}
 }
+
 
 @Data
 class ProductFormData {

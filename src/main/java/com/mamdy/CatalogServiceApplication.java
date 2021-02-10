@@ -4,22 +4,39 @@ import com.mamdy.dao.*;
 import com.mamdy.entites.*;
 import com.mamdy.utils.FileUploadUtility;
 import net.bytebuddy.utility.RandomString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.CacheControl;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 @SpringBootApplication
-public class CatalogServiceApplication {
+public class CatalogServiceApplication implements WebMvcConfigurer {
+    private static Logger logger = LoggerFactory.getLogger(CatalogServiceApplication.class.getName());
     final int nbPhotoUrls = 4;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        // Register resource handler for images
+        registry.addResourceHandler("/images/**").addResourceLocations("/WEB-INF/images/")
+                .setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
+    }
+
+
 
     public static void main(String[] args) {
         SpringApplication.run(CatalogServiceApplication.class, args);
@@ -38,7 +55,7 @@ public class CatalogServiceApplication {
 
             Set<ProductInOrder> productsInOrders = new HashSet<>();
             categoryRepository.deleteAll();
-            Stream.of("C1 Ordinateurs", "C2 Imprimantes", "C3 Maison", "C4 Téléphones", "C5 Electro-Menager","C6 Alimentation","C7 Mécanique","C8 Voyages","C9 Loisirs","C10 Tourismes").forEach(c -> {
+            Stream.of("C1 Ordinateurs", "C2 Imprimantes", "C3 Maison", "C4 Téléphones", "C5 Electro-Menager","C6 Alimentation","C7 Mécanique","C8 Tourismes","C9 Loisirs").forEach(c -> {
                 categoryRepository.save(new Category(c.split(" ")[0], c.split(" ")[1], null, null, true, new ArrayList<>()));
 
 
@@ -108,13 +125,26 @@ public class CatalogServiceApplication {
                     productPhotoUrls.add(url);
 
                 }
-
-                Product p = productRepository.save(new Product(null,
-                        RandomString.make(5), s, Math.random() * 1000,
+                double price = Math.random() * 1000;
+                double currentPrice = price-(price * 0.3);
+                Product p = productRepository.save(
+                        new Product(
+                                null,
                         RandomString.make(5),
-                        "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.", Math.random() * 1000, false, false, true, true, (int) (Math.random() * 10), (int) (Math.random() * 10), (int) (Math.random() * 10),
-                        productPhotoUrls,
-                        null,
+                                s,
+                                price,
+                        RandomString.make(5),
+                        "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
+                        currentPrice,
+                        false,
+                                false,
+                                true,
+                                true,
+                                (int) (Math.random() * 10),
+                                (int) (Math.random() * 10),
+                                (int) (Math.random() * 10),
+                                productPhotoUrls,
+                                null,
                         (int) (Math.random() * 10),
                         (int) (Math.random() * 10),
                         0,
@@ -137,15 +167,25 @@ public class CatalogServiceApplication {
                     productPhotoUrls.add(url);
 
                 }
+                double price = Math.random() * 1000;
+                double currentPrice = price-(price * 0.3);
                 Product p = productRepository.save(new Product(null,
-                        RandomString.make(5), s, Math.random() * 1000,
                         RandomString.make(5),
-                        "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.", Math.random() * 1000,
+                        s,
+                        price,
+                        RandomString.make(5),
+                        "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
+                        currentPrice,
                         false, false, true, true, (int) (Math.random() * 10), (int) (Math.random() * 10), (int) (Math.random() * 10),
                         productPhotoUrls,
                         null,
                         (int) (Math.random() * 10),
-                        (int) (Math.random() * 10), 1, null, null, null, c2));
+                        (int) (Math.random() * 10),
+                        1,
+                        null,
+                        null,
+                        null,
+                        c2));
                 //Mise à jour de la categorie c2
                 c2.getProducts().add(p);
                 categoryRepository.save(c2);
@@ -159,10 +199,21 @@ public class CatalogServiceApplication {
                     productPhotoUrls.add(url);
 
                 }
-                Product p = productRepository.save(new Product(null, RandomString.make(5),
-                        name, Math.random() * 1000, RandomString.make(5), RandomString.make(5),
-                        Math.random() * 1000, false, false, true, true, (int) (Math.random() * 10),
-                        (int) (Math.random() * 10), (int) (Math.random() * 10),
+                double price = Math.random() * 1000;
+                double currentPrice = price-(price * 0.3);
+                Product p = productRepository.save(new
+                        Product(
+                                null,
+                        RandomString.make(5),
+                        name,
+                        price,
+                        RandomString.make(7),
+                        RandomString.make(20),
+                        currentPrice,
+                        false, false, true,
+                        true, (int) (Math.random() * 10),
+                        (int) (Math.random() * 10),
+                        (int) (Math.random() * 10),
                         productPhotoUrls,
                         null,
                         (int) (Math.random() * 10),
@@ -182,12 +233,27 @@ public class CatalogServiceApplication {
                     productPhotoUrls.add(url);
 
                 }
-                Product p = productRepository.save(new Product(null, RandomString.make(5), name,
-                        Math.random() * 1000, RandomString.make(5),
-                        "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.", Math.random() * 1000, false, false, true, true, (int) (Math.random() * 10), (int) (Math.random() * 10), (int) (Math.random() * 10),
+                double price = Math.random() * 1000;
+                double currentPrice = price-(price * 0.3);
+                Product p = productRepository.save(new Product(
+                        null,
+                        RandomString.make(5),
+                        name,
+                        price,
+                        RandomString.make(5),
+                        "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
+                        currentPrice,
+                        false,
+                        false,
+                        true,
+                        true,
+                        (int) (Math.random() * 10),
+                        (int) (Math.random() * 10),
+                        (int) (Math.random() * 10),
                         productPhotoUrls,
                         null,
-                        (int) (Math.random() * 10), (int) (Math.random() * 10), 2, null, null, null, c4));
+                        (int) (Math.random() * 10),
+                        (int) (Math.random() * 10), 2, null, null, null, c4));
                 //Mise à jour de la categorie c4
                 c4.getProducts().add(p);
                 categoryRepository.save(c4);
@@ -201,8 +267,12 @@ public class CatalogServiceApplication {
                     productPhotoUrls.add(url);
 
                 }
-                Product p = productRepository.save(new Product(null, RandomString.make(5), name, Math.random() * 1000, RandomString.make(5),
-                        "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.", Math.random() * 1000, false, false, true, true, (int) (Math.random() * 10),
+                double price = Math.random() * 1000;
+                double currentPrice = price-(price * 0.3);
+                Product p = productRepository.save(new Product(null, RandomString.make(5), name,
+                        price, RandomString.make(5),
+                        "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
+                        currentPrice, false, false, true, true, (int) (Math.random() * 10),
                         (int) (Math.random() * 10), (int) (Math.random() * 10),
                         productPhotoUrls,
                         null,
@@ -256,4 +326,7 @@ public class CatalogServiceApplication {
         };
 
     }
+
+
+
 }
