@@ -10051,3 +10051,39 @@ INFO    2021-02-10 19:47:41,241 [http-nio-8087-exec-2] org.springframework.web.s
 INFO    2021-02-10 19:47:41,586 [http-nio-8087-exec-2] org.mongodb.driver.connection [] [] - Opened connection [connectionId{localValue:3, serverValue:64}] to localhost:27017
 INFO    2021-02-10 20:15:05,537 [http-nio-8087-exec-7] com.mamdy.utils.MailJetUtils [] [] - Mail envoyé avec success
 INFO    2021-02-10 20:18:34,298 [http-nio-8087-exec-5] com.mamdy.utils.MailJetUtils [] [] - Mail envoyé avec success
+INFO    2021-02-11 12:25:39,453 [http-nio-8087-exec-1] org.mongodb.driver.connection [] [] - Opened connection [connectionId{localValue:4, serverValue:65}] to localhost:27017
+INFO    2021-02-11 12:47:59,326 [Thread-7] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor [] [] - Shutting down ExecutorService 'applicationTaskExecutor'
+INFO    2021-02-11 12:47:59,355 [Thread-7] org.mongodb.driver.connection [] [] - Closed connection [connectionId{localValue:3, serverValue:64}] to localhost:27017 because the pool has been closed.
+INFO    2021-02-11 12:47:59,357 [Thread-7] org.mongodb.driver.connection [] [] - Closed connection [connectionId{localValue:2, serverValue:63}] to localhost:27017 because the pool has been closed.
+INFO    2021-02-11 12:47:59,359 [Thread-7] org.mongodb.driver.connection [] [] - Closed connection [connectionId{localValue:4, serverValue:65}] to localhost:27017 because the pool has been closed.
+INFO    2021-02-11 12:48:37,128 [background-preinit] org.hibernate.validator.internal.util.Version [] [] - HV000001: Hibernate Validator 6.1.1.Final
+INFO    2021-02-11 12:48:37,493 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Starting CatalogServiceApplication on kubernetes-master with PID 27882 (/home/mamdy/Bureau/_DVT/Workspaces/catalog-service/target/classes started by mamdy in /home/mamdy/Bureau/_DVT/Workspaces/catalog-service)
+INFO    2021-02-11 12:48:37,498 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - No active profile set, falling back to default profiles: default
+INFO    2021-02-11 12:48:37,640 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO    2021-02-11 12:48:37,640 [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [] [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO    2021-02-11 12:48:39,349 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Bootstrapping Spring Data repositories in DEFAULT mode.
+INFO    2021-02-11 12:48:39,496 [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate [] [] - Finished Spring Data repository scanning in 139ms. Found 9 repository interfaces.
+INFO    2021-02-11 12:48:40,149 [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] [] - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$66f3e979] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO    2021-02-11 12:48:40,971 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat initialized with port(s): 8087 (http)
+INFO    2021-02-11 12:48:41,252 [restartedMain] org.springframework.web.context.ContextLoader [] [] - Root WebApplicationContext: initialization completed in 3611 ms
+INFO    2021-02-11 12:48:42,092 [restartedMain] org.mongodb.driver.cluster [] [] - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+INFO    2021-02-11 12:48:42,238 [cluster-ClusterId{value='6025199a6df51a6cea3e22c5', description='null'}-localhost:27017] org.mongodb.driver.connection [] [] - Opened connection [connectionId{localValue:1, serverValue:66}] to localhost:27017
+INFO    2021-02-11 12:48:42,248 [cluster-ClusterId{value='6025199a6df51a6cea3e22c5', description='null'}-localhost:27017] org.mongodb.driver.cluster [] [] - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[3, 6, 3]}, minWireVersion=0, maxWireVersion=6, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=4140549}
+WARN    2021-02-11 12:48:42,446 [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [] [] - Unable to start LiveReload server
+INFO    2021-02-11 12:48:43,666 [restartedMain] org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration [] [] - 
+
+Using generated security password: 27010fd9-f9bd-4450-a878-9e7e9911a887
+
+INFO    2021-02-11 12:48:43,858 [restartedMain] org.springframework.security.web.access.channel.ChannelProcessingFilter [] [] - Validated configuration attributes
+INFO    2021-02-11 12:48:43,893 [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain [] [] - Creating filter chain: any request, [org.springframework.security.web.access.channel.ChannelProcessingFilter@1a1b3e5b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7766b80c, org.springframework.security.web.context.SecurityContextPersistenceFilter@31fcc802, org.springframework.security.web.header.HeaderWriterFilter@49374d72, org.springframework.security.web.authentication.logout.LogoutFilter@32541d7b, com.mamdy.security.JWTAuthorizationFilter@26fc106a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@331793ce, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7832a53a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@681cd0a8, org.springframework.security.web.session.SessionManagementFilter@11c9a419, org.springframework.security.web.access.ExceptionTranslationFilter@4773091d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@48f57928]
+INFO    2021-02-11 12:48:44,177 [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor [] [] - Initializing ExecutorService 'applicationTaskExecutor'
+INFO    2021-02-11 12:48:45,072 [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] [] - Tomcat started on port(s): 8087 (http) with context path ''
+INFO    2021-02-11 12:48:45,082 [restartedMain] com.mamdy.CatalogServiceApplication [] [] - Started CatalogServiceApplication in 8.28 seconds (JVM running for 9.099)
+INFO    2021-02-11 12:48:45,189 [restartedMain] org.mongodb.driver.connection [] [] - Opened connection [connectionId{localValue:2, serverValue:67}] to localhost:27017
+INFO    2021-02-11 12:48:45,463 [restartedMain] com.mamdy.utils.FileUploadUtility [] [] - Compressed Image Byte Size - 8
+INFO    2021-02-11 12:49:06,731 [http-nio-8087-exec-1] org.springframework.web.servlet.DispatcherServlet [] [] - Initializing Servlet 'dispatcherServlet'
+INFO    2021-02-11 12:49:06,760 [http-nio-8087-exec-1] org.springframework.web.servlet.DispatcherServlet [] [] - Completed initialization in 28 ms
+INFO    2021-02-11 12:52:51,875 [http-nio-8087-exec-6] com.mamdy.utils.MailJetUtils [] [] - Mail envoyé avec success
+INFO    2021-02-11 12:58:01,950 [http-nio-8087-exec-1] org.mongodb.driver.connection [] [] - Opened connection [connectionId{localValue:3, serverValue:90}] to localhost:27017
+INFO    2021-02-11 14:32:03,053 [http-nio-8087-exec-5] com.mamdy.utils.MailJetUtils [] [] - Mail envoyé avec success
+INFO    2021-02-11 14:42:58,270 [http-nio-8087-exec-4] com.mamdy.utils.MailJetUtils [] [] - Mail envoyé avec success
