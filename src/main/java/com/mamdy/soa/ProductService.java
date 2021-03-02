@@ -1,5 +1,6 @@
 package com.mamdy.soa;
 
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.mamdy.entites.Category;
 import com.mamdy.entites.Product;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,7 @@ public interface ProductService {
 	Product findByCode(String code);
 
 	//decrease stock
-	void decreaseStock(String productCode, int amount);
+	void decreaseStock(String productCode, int amount) throws MailjetSocketTimeoutException;
 
 	Product offSale(String productId);
 

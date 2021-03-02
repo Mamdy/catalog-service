@@ -30,7 +30,7 @@ public class PaymentController {
 
     @PostMapping("/confirm/{id}")
     public ResponseEntity<String> confirm(@PathVariable("id") String id, @RequestBody String orderId, Principal principal) throws StripeException, MailjetSocketTimeoutException {
-        PaymentIntent paymentIntent = paymentService.confirm(id,orderId, principal.getName().toString());
+        PaymentIntent paymentIntent = paymentService.confirm(id,orderId);
         String paymentStr = paymentIntent.toJson();
         return new ResponseEntity<String>(paymentStr, HttpStatus.OK);
     }

@@ -1,5 +1,6 @@
 package com.mamdy.dao;
 
+import com.mamdy.entites.Category;
 import com.mamdy.entites.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     Product findByName(String name);
 
     Page<Product> findByNameContaining(String name, Pageable pageable);
+    Page<Product> findByCategory(Category category, Pageable pageable);
 
     List<Product> findByNameLike(String name);
     //Product saveProduct(@Param("product") Product product, String categoryId);

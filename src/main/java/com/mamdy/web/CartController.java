@@ -46,38 +46,36 @@ public class CartController {
 
     @PostMapping("")
     public ResponseEntity<Cart> mergeCart(@RequestBody ItemForm itemFormData, Principal principal) {
-        Client newCustomer = clientRepository.findByUsername(itemFormData.getClient().getUsername());
+        Client customer = clientRepository.findByEmail(principal.getName());
         //si nouveau Client, on l'associe à un nouveau panier puis on l'enregistre en base
-        if (newCustomer == null) {
-            newCustomer = clientRepository.save(itemFormData.getClient());
+        if (customer == null) {
+            customer = clientRepository.save(itemFormData.getClient());
             //on lui creer un nouveau panier
             Cart cart = new Cart();
             cart.setProductsInOrder(new HashSet<>());
-            cart.setClient(newCustomer);
+            cart.setClient(customer);
             cart = cartRepository.save(cart);
-            newCustomer.setCart(cart);
-            newCustomer = clientRepository.save(newCustomer);
+            customer.setCart(cart);
+            customer = clientRepository.save(customer);
         }
 
         try {
-            cartService.mergeLocalCart(itemFormData.getLocalCartProductsInOrder(), newCustomer);
+            cartService.mergeLocalCart(itemFormData.getLocalCartProductsInOrder(), customer);
         } catch (Exception e) {
             ResponseEntity.badRequest().body("Merge Cart Failed");
         }
 
-        return ResponseEntity.ok(cartService.getCart(newCustomer));
+        return ResponseEntity.ok(cartService.getCart(customer));
     }
 
     @GetMapping("")
     public Cart getCart(Principal principal) {
-        Optional<Client> customer = Optional.ofNullable(clientRepository.findByUsername(principal.getName().toLowerCase()));
+        Optional<Client> customer = Optional.ofNullable(clientRepository.findByEmail(principal.getName().toLowerCase()));
         if(customer.isPresent()) {
             final Cart cart = customer.get().getCart();
             return cart;
         }
         return null;
-        /*Set<ProductInOrder> productInOrders = client.getCart().getProductsInOrder();
-        return productInOrders;*/
     }
 
 
@@ -98,20 +96,19 @@ public class CartController {
 
     @PutMapping("/{itemId}")
     public ProductInOrder modifyItem(@PathVariable("itemId") String itemId, @RequestBody Integer quantity, Principal principal) {
-        Client client = clientRepository.findByUsername(principal.getName().toLowerCase());
+        Client client = clientRepository.findByEmail(principal.getName().toLowerCase());
         productInOrderService.update(itemId, quantity, client);
         return productInOrderService.findOne(itemId, client);
     }
 
     @DeleteMapping("/{itemId}")
     public void deleteItem(@PathVariable("itemId") String itemId, Principal principal) {
-        Client client = clientRepository.findByUsername(principal.getName().toLowerCase());
-        cartService.delete(itemId, client);
+        cartService.delete(itemId, principal.getName());
     }
 
     @PostMapping("/checkout")
     public OrderMain checkout(Principal principal) {
-        Client client = clientRepository.findByUsername(principal.getName().toLowerCase());
+        Client client = clientRepository.findByEmail(principal.getName().toLowerCase());
         return cartService.checkout(client);
     }
 

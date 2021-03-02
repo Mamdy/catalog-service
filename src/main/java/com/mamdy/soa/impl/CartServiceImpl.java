@@ -1,6 +1,5 @@
 package com.mamdy.soa.impl;
 
-import antlr.StringUtils;
 import com.mamdy.dao.CartRepository;
 import com.mamdy.dao.ClientRepository;
 import com.mamdy.dao.OrderRepository;
@@ -16,10 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -46,33 +46,12 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void mergeLocalCart(Collection<ProductInOrder> productInOrders, Client client) {
+    public void mergeLocalCart(Collection<ProductInOrder> productInOrders, Client customer) {
         //on recupère le panier du client et on y ajoute le/les nouveaux produits à commander
-        /*Optional<Cart> finalCart = Optional.ofNullable(client.getCart());
-
-        if (finalCart == null) {
-            finalCart = new Cart();
-            finalCart.setProductsInOrder(new HashSet<>());
-            finalCart.setClient(client);
-            finalCart = cartRepository.save(finalCart);
-        }else if (finalCart.getProductsInOrder().size() > 0 && finalCart.getProductsInOrder().contains(null)){
-            Cart finalCart1 = finalCart;
-            productInOrders.forEach(productInOrder -> {
-
-                ProductInOrder prod = productInOrder;
-                    prod.setCart(finalCart1);
-                    finalCart1.getProductsInOrder().add(prod);
-
-                productInOrderRepository.save(prod);
-            });
-            cartRepository.save(finalCart1);
-
-        }*/
-        Optional<Cart> finalCart = Optional.ofNullable(client.getCart());
+        Optional<Cart> finalCart = Optional.ofNullable(customer.getCart());
         finalCart.ifPresent(fc->{
             productInOrders.forEach(productInOrder -> {
                 Set<ProductInOrder> set = fc.getProductsInOrder();
-
                 Optional<ProductInOrder> old = set.stream().filter(e -> e.getProductCode().
                         equals(productInOrder.getProductCode())).findFirst();
                 ProductInOrder prod;
@@ -94,18 +73,20 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void delete(String itemId, Client client) {
+    public void delete(String itemId, String customerEmail) {
+        Client client = clientRepository.findByEmail(customerEmail);
         Optional<ProductInOrder> productInOrder = client.getCart().getProductsInOrder().stream()
                 .filter(e -> itemId.equals(e.getProductCode()))
                 .findFirst();
 
         productInOrder.ifPresent(productInOrder1 -> {
             productInOrder1.setCart(null);
-            productInOrderRepository.deleteById(productInOrder1.getId());
-            //il faut effacer sa reference dans son panier
+            //productInOrderRepository.deleteById(productInOrder1.getId());
+            //il faut supprimer sa reference dans son panier
             Cart finalCart = client.getCart();
             finalCart.getProductsInOrder().remove(productInOrder1);
             cartRepository.save(finalCart);
+            productInOrderRepository.save(productInOrder1);
 
         });
 
@@ -116,27 +97,19 @@ public class CartServiceImpl implements CartService {
     public OrderMain checkout(Client client) {
         final LocalDateTime ldt = LocalDateTime.now();
         String numOrder = this.generateNumOrder(ldt);
+        String shippingAdress=client.getFirstName() +
+                " " + client.getLastName() + ", "+
+                client.getAddress()+", "+
+                client.getCodePostal()+" "+
+                client.getVille()+","+
+                client.getPays();
 
         OrderMain order = new OrderMain(client);
         order.setCreateTime(LocalDateTime.now());
         order.setProducts(client.getCart().getProductsInOrder());
         order.setNumOrder(numOrder.toUpperCase());
-        order.setShippingAddress(client.getAddress());
-
-        order = orderRepository.save(order);
-        for (ProductInOrder productInOrder : client.getCart().getProductsInOrder()) {
-            //on vide le panier du client
-            productInOrder.setCart(null);
-            productInOrder.setOrderMain(order);
-            Cart cart = client.getCart();
-            if(cart.getProductsInOrder().contains(productInOrder)){
-                 cart.getProductsInOrder().remove(productInOrder);
-                 cartRepository.save(cart);
-            }
-            productInOrderRepository.save(productInOrder);
-
-        }
-        return  order;
+        order.setShippingAddress(shippingAdress);
+        return orderRepository.save(order);
 
     }
 

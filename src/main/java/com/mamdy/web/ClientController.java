@@ -17,10 +17,9 @@ public class ClientController {
 
     @PostMapping("/client")
     public Client saveClient(@RequestBody ClientForm clientForm) {
-        Client client = clientRepository.findByUsername(clientForm.getUsername());
+        Client client = clientRepository.findByEmail(clientForm.getEmail());
         if (client == null) {
             client = new Client();
-            client.setUsername(clientForm.getUsername());
             client.setEmail(clientForm.getEmail());
             client.setFirstName(clientForm.getFirstName());
             client.setLastName(clientForm.getLastName());

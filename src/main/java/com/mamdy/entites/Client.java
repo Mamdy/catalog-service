@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,12 +26,19 @@ public class Client {
     private String firstName;
     private String lastName;
     private String address;
+    private String codePostal;
+    private String ville;
+    private String pays;
+    @NotBlank
+    @NotNull
+    @UniqueElements
     private String email;
     private String phone;
-    private String username;
 
     @JsonIgnore  // fix bi-direction toString() recursion problem
     @DBRef
     private Cart cart;
 
 }
+
+

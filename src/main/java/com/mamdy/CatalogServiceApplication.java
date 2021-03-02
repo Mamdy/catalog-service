@@ -55,8 +55,8 @@ public class CatalogServiceApplication implements WebMvcConfigurer {
 
             Set<ProductInOrder> productsInOrders = new HashSet<>();
             categoryRepository.deleteAll();
-            Stream.of("C1 Ordinateurs", "C2 Imprimantes", "C3 Maison", "C4 Téléphones", "C5 Electro-Menager","C6 Alimentation","C7 Mécanique","C8 Tourismes","C9 Loisirs").forEach(c -> {
-                categoryRepository.save(new Category(c.split(" ")[0], c.split(" ")[1], null, null, true, new ArrayList<>()));
+            Stream.of("C1 Ordinateurs", "C2 Imprimantes", "C3 Maison", "C4 Téléphones", "C5 Électroménager","C6 Alimentation").forEach(c -> {
+                categoryRepository.save(new Category(c.split(" ")[0], c.split(" ")[1].toLowerCase(), null, null, true, new ArrayList<>()));
 
 
             });
@@ -282,9 +282,32 @@ public class CatalogServiceApplication implements WebMvcConfigurer {
                 categoryRepository.save(c5);
             });
 
+            Category c6 = categoryRepository.findById("C6").get();
+            Stream.of("RIZ-PARFUMÉ 50KG", "RIZ-BENGALADESH 50KG",  "BIDON D'HUILE 20L","Pomme de terre-5KG","OIGNONS 50KG","FARINE 50KG").forEach(name -> {
+                List<String> productPhotoUrls = new ArrayList<>();
+                for (i.set(0); i.get() <nbPhotoUrls; i.getAndIncrement()) {
+                    String url = name + i;
+                    productPhotoUrls.add(url);
+
+                }
+                double price = Math.random() * 1000;
+                double currentPrice = price-(price * 0.3);
+                Product p = productRepository.save(new Product(null, RandomString.make(5), name,
+                        price, RandomString.make(5),
+                        "Le sac idéal pour la conservation des oignons cultivés au jardin. Les sacs en structure en filet sont prévus pour assurer la circulation de l'air nécessaire pendant le processus de conservation durant lequel les champignons et la pourriture seront exclus.\n" +
+                                "\n" +
+                                "Les sacs sont réutilisables et munis d'un noeud coulant sur le côté supérieur pour une fermeture aisée.",
+                        currentPrice, false, false, true, true, (int) (Math.random() * 10),
+                        (int) (Math.random() * 10), (int) (Math.random() * 10),
+                        productPhotoUrls,
+                        null,
+                        (int) (Math.random() * 10), (int) (Math.random() * 10), 3, null, null, null, c5));
+                //Mise à jour de la categorie c5
+                c6.getProducts().add(p);
+                categoryRepository.save(c6);
+            });
             clientRepository.deleteAll();
             Client client1 = new Client();
-            client1.setUsername("balphamamoudoutest@yahoo.fr");
             client1.setFirstName("test");
             client1.setLastName("test");
             client1.setEmail("balphamamoudoutest@yahoo.fr");

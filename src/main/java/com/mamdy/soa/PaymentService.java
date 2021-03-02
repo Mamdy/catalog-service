@@ -62,8 +62,8 @@ public class PaymentService {
         return PaymentIntent.create(params);
     }
 
-    public PaymentIntent confirm(String id, String orderId, String customerMail) throws StripeException, MailjetSocketTimeoutException {
-        Client customer = clientRepository.findByUsername(customerMail);
+    public PaymentIntent confirm(String id, String orderId) throws StripeException, MailjetSocketTimeoutException {
+
         Stripe.apiKey = secretKey;
         PaymentIntent paymentIntent = PaymentIntent.retrieve(id);
         Map<String, Object> params = new HashMap<>();
@@ -76,10 +76,10 @@ public class PaymentService {
                 //envois de mail pour notifier le client de sa commande
                 MailJetUtils.sendEmail(
                         "balphamamoudou2013@gmail.com",
-                        customerMail,
-                        order.getNumOrder(),
+                        order.getBuyerEmail(),
+                        order,
                         "Confirmation Commande ",
-                        "Bonjour " + customer.getFirstName(),
+                        "Bonjour " + order.getBuyerName(),
                         mailjetPublicKey,
                         mailjetSecretKey
                 );
@@ -87,9 +87,13 @@ public class PaymentService {
 
                 Set<ProductInOrder> setPio = order.getProducts();
                 setPio.forEach(productInOrder -> {
-                    this.productService.decreaseStock(productInOrder.getProductCode(), productInOrder.getCount());
+                    try {
+                        this.productService.decreaseStock(productInOrder.getProductCode(), productInOrder.getCount());
+                    } catch (MailjetSocketTimeoutException e) {
+                        e.printStackTrace();
+                    }
                     //supprimer les produits commandé du panier
-                    this.cartService.delete(productInOrder.getProductCode(), customer);
+                    this.cartService.delete(productInOrder.getProductCode(), order.getBuyerEmail());
                 });
             }
 

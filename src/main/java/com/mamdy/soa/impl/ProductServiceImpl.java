@@ -1,5 +1,6 @@
 package com.mamdy.soa.impl;
 
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.mamdy.dao.CategoryRepository;
 import com.mamdy.dao.ProductRepository;
 import com.mamdy.entites.Category;
@@ -10,7 +11,9 @@ import com.mamdy.exception.MyException;
 import com.mamdy.soa.CategoryService;
 import com.mamdy.soa.ProductService;
 import com.mamdy.utils.FileUploadUtility;
+import com.mamdy.utils.MailJetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,12 @@ import java.util.Collections;
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
+
+	@Value("${mailjet.key.public}")
+	String mailjetPublicKey;
+
+	@Value("${mailjet.key.secret}")
+	String mailjetSecretKey;
 	@Autowired
 	private ProductRepository productRepository;
 	@Autowired
@@ -123,12 +132,27 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void decreaseStock(String productCode, int amount) {
+	public void decreaseStock(String productCode, int amount) throws MailjetSocketTimeoutException {
 		Product product = findByCode(productCode);
 		if (product == null) throw new MyException(ResultEnum.PRODUCT_NOT_EXIST);
 
 		int update = product.getProductStock() - amount;
-		if (update < 0) throw new MyException(ResultEnum.PRODUCT_NOT_ENOUGH);
+		if (update < 1)
+			update = 0;
+			//Notifier le vendeur de la baisse de stock
+			//envois de mail pour notifier le client de sa commande
+			String body = "Bonjour Alpha, le produit " + product.getName() + " a son stock insuffisant.";
+			MailJetUtils.informSellerStokLowest(
+					"balphamamoudou2013@gmail.com",
+					"balphamamoudou2013@gmail.com",
+					"Stock insuffisant!!",
+					body,
+					mailjetPublicKey,
+					mailjetSecretKey
+			);
+
+
+		//throw new MyException(ResultEnum.PRODUCT_NOT_ENOUGH);
 
 		product.setProductStock(update);
 		productRepository.save(product);

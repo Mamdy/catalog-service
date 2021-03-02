@@ -12,7 +12,7 @@ public interface CartService {
 
     void mergeLocalCart(Collection<ProductInOrder> productInOrders, Client client);
 
-    void delete(String itemId, Client client);
+    void delete(String itemId, String customerEmail);
 
     OrderMain checkout(Client client);
 

@@ -12,10 +12,12 @@ import com.mamdy.entites.Product;
 import com.mamdy.soa.ProductService;
 import com.mamdy.utils.FileUploadUtility;
 import com.mamdy.utils.MailJetUtils;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -125,7 +127,7 @@ public class CatalogueController {
 
 
 		Category c = categoryRepository.findByName(productFormData.getRegisterFormData().getCategory());
-		if (c != null) {
+		if (c != null) {	
 			double price = productFormData.getRegisterFormData().getPrice();
 			double currentPrice = price-(price * 0.3);
 
@@ -227,6 +229,21 @@ public class CatalogueController {
 		return productPage;
 	}
 
+	@GetMapping(value = "/searchByCategory")
+	public Page<Product> searchProductByCategory(@RequestParam("categoryName") String categoryName,
+												@RequestParam(value = "page", defaultValue = "1") Integer page,
+												@RequestParam(value = "size", defaultValue = "10") Integer size) {
+		PageRequest request = PageRequest.of(page - 1, size);
+		Page<Product> productPage = null;
+
+		Category category = categoryRepository.findByNameLike(categoryName.toLowerCase());
+		if(category!=null){
+			productPage = productRepository.findByCategory(category, request);
+		}
+		
+
+		return productPage;
+	}
 
 	@GetMapping(path = {"/resetPassword/{email}"})
 	public boolean sendResetPasswordLink(@PathVariable("email") final String email) throws MailjetSocketTimeoutException {
