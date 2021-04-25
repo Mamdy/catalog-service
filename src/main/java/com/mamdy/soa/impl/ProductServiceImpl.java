@@ -137,11 +137,11 @@ public class ProductServiceImpl implements ProductService {
 		if (product == null) throw new MyException(ResultEnum.PRODUCT_NOT_EXIST);
 
 		int update = product.getProductStock() - amount;
-		if (update < 1)
+		if (update < 1){
 			update = 0;
 			//Notifier le vendeur de la baisse de stock
 			//envois de mail pour notifier le client de sa commande
-			String body = "Bonjour Alpha, le produit " + product.getName() + " a son stock insuffisant.";
+			String body = "Bonjour Alpha, le produit " + product.getName() + " a un stock " +  update + " donc insuffisant!!";
 			MailJetUtils.informSellerStokLowest(
 					"balphamamoudou2013@gmail.com",
 					"balphamamoudou2013@gmail.com",
@@ -150,6 +150,9 @@ public class ProductServiceImpl implements ProductService {
 					mailjetPublicKey,
 					mailjetSecretKey
 			);
+
+		}
+
 
 
 		//throw new MyException(ResultEnum.PRODUCT_NOT_ENOUGH);

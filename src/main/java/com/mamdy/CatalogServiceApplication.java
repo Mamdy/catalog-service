@@ -301,7 +301,7 @@ public class CatalogServiceApplication implements WebMvcConfigurer {
                         (int) (Math.random() * 10), (int) (Math.random() * 10),
                         productPhotoUrls,
                         null,
-                        (int) (Math.random() * 10), (int) (Math.random() * 10), 3, null, null, null, c5));
+                        (int) (Math.random() * 10), (int) (Math.random() * 10), 3, null, null, null, c6));
                 //Mise à jour de la categorie c5
                 c6.getProducts().add(p);
                 categoryRepository.save(c6);

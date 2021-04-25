@@ -140,7 +140,7 @@ public class MailJetUtils {
                                                 + "<br>" + "<br>"+ "<br>" +
                                         "<p style=\"font-size:16px; font-familly:'proxima-nova';\">"  + body +  "<br>\n" + "<br>\n" +
                                         " Vous avez sollicité un nouveau mot de passe, nous vous invitons à le créer en cliquant sur le bouton ci-dessous:" +"<br>" + "<br>" + "<br>" + "<br>" +
-                                        "<a href=\"http://localhost:4200/changePassword/\" style =\" display:inline-block;text-align:center; line-height:44px; text-decoration:none; color:white; width:300px; height: 15px; font-weight:bold; font-size:16px; background-color: rgba(24, 164, 189, 0.979); font-familly:'proxima-nova'; padding: 10px 100px; border-radius: 25px; margin-left: 315px;\">Réinitialiser mon mot de passe</a></p>" +
+                                        "<a href=\"https://sodenkamin.herokuapp.com/changePassword/\" style =\" display:inline-block;text-align:center; line-height:44px; text-decoration:none; color:white; width:300px; height: 15px; font-weight:bold; font-size:16px; background-color: rgba(24, 164, 189, 0.979); font-familly:'proxima-nova'; padding: 10px 100px; border-radius: 25px; margin-left: 315px;\">Réinitialiser mon mot de passe</a></p>" +
                                         "<br>"+ "<br>"+
                                         "<p style=\"font-size:16px;font-familly:'proxima-nova';\"> <strong>Attention</strong>, ce lien n'est utilisable qu'une seule fois et est valable 24H. </p> " +"<br>"+
                                         "<br>" + "<p style=\"font-size:16px; font-familly:'proxima-nova';\"> <strong>Important:</strong> Votre nouveau mot de passe doit être complexe et contenir 8 caractères dont 1 majuscule, 1 minuscule, un chiffre et un caractère spécifique.</p>" +"<br>"+
@@ -164,7 +164,7 @@ public class MailJetUtils {
 
     }
 
-    /** methode qui permet d'envoyer un lien de changement du mot de passe
+    /** methode qui permet de notifier le vendeur du stock insuffisant
      * @param sender           l'emeteur du message
      * @param recipient        le destinataire du mail
      * @param subject          l'objet du mail

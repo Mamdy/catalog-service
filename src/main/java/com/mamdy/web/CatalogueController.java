@@ -245,6 +245,12 @@ public class CatalogueController {
 		return productPage;
 	}
 
+	@GetMapping(value = "/searchByCode/{code}")
+	public Product searchProductByCategory(@PathVariable("code") final String code) {
+		Product product = productRepository.findByCode(code);
+		return product;
+	}
+
 	@GetMapping(path = {"/resetPassword/{email}"})
 	public boolean sendResetPasswordLink(@PathVariable("email") final String email) throws MailjetSocketTimeoutException {
 		Client client = this.clientRepository.findByEmail(email);
