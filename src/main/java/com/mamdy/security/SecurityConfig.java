@@ -48,14 +48,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/apiTest/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/categories/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/products/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/allProducts/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/allProductsPage/**").permitAll();
+
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/product/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/home/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/resetPassword/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/images/**").permitAll();
+
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/photos/**").permitAll();
        // http.authorizeRequests().antMatchers(HttpMethod.GET, "/order/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/searchKeyWord/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/searchByCategory/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/searchByCode/**").permitAll();
 
+        http.authorizeRequests().antMatchers(HttpMethod.PATCH,"/categoryName/**").hasAnyAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.PATCH,"/updateProduct/**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/categories/**").hasAnyAuthority("CUSTOMER", "ADMIN");
         http.authorizeRequests().antMatchers("/products/**").hasAnyAuthority("CUSTOMER", "ADMIN");
         http.authorizeRequests().antMatchers("/cart/**").permitAll();

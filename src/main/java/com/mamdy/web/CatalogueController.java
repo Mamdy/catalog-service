@@ -5,6 +5,8 @@ import com.mamdy.dao.CategoryRepository;
 import com.mamdy.dao.ClientRepository;
 import com.mamdy.dao.PhotoRepository;
 import com.mamdy.dao.ProductRepository;
+import com.mamdy.dto.CategoryNameDto;
+import com.mamdy.dto.ProductEssentialDataDto;
 import com.mamdy.entites.Category;
 import com.mamdy.entites.Client;
 import com.mamdy.entites.Photo;
@@ -12,15 +14,14 @@ import com.mamdy.entites.Product;
 import com.mamdy.soa.ProductService;
 import com.mamdy.utils.FileUploadUtility;
 import com.mamdy.utils.MailJetUtils;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Controller
 @RestController
@@ -107,13 +110,89 @@ public class CatalogueController {
 		}
 		return photos;
 	}
+	@PatchMapping(value = "/categoryName/{id}")
+	public boolean editCategoryName(
+			@RequestBody CategoryNameDto categoryNameDto,
+			@PathVariable("id") final String id ){
+		this.categoryRepository.findById(id)
+				.map(category -> {
+					category.setName(categoryNameDto.getName());
 
+					this.categoryRepository.save(category);
+					return Boolean.TRUE;
+				})
+				.orElseGet(()->{
+					Category newCategory = new Category();
+					newCategory.setName(categoryNameDto.getName());
+					categoryRepository.save((newCategory));
+					return Boolean.TRUE;
+				});
+
+		return true;
+	}
+
+	@GetMapping("/allProducts")
+	public List<Product> getAllProducts(){
+		List<Product> productList = this.productRepository.findAll();
+		List<Product> finalProducts = new ArrayList<>();
+
+		for(Product product: productList){
+			List<Photo> photos = product.getPhotos();
+			photos.forEach(photo->{
+				photo.setImg(FileUploadUtility.decompressBytes(photo.getImg()));
+			});
+			product.setPhotos(photos);
+			finalProducts.add(product);
+		}
+
+		//System.out.println("photo decompresser " +finalProducts.get(20).getPhotos().get(0).getImg());
+		return finalProducts;
+
+	}
+
+	/*@GetMapping("/products")
+	public Page<Product> getAllProducts(Pageable pageable){
+		Pageable wholePage = Pageable.unpaged();
+		return this.productRepository.findAll(wholePage);
+	}*/
+
+
+	@PatchMapping(value = "/updateProduct/{id}")
+	public Product updateProduct(@RequestBody ProductEssentialDataDto patchProduct,
+												  @PathVariable("id") final String id){
+		AtomicReference<Product> updatedProduct= new AtomicReference<Product>();
+		this.productRepository.findById(id)
+				.map(product->{
+					product.setName(patchProduct.getName());
+					product.setBrand(patchProduct.getBrand());
+					product.setDescription(patchProduct.getDescription());
+					product.setPrice(patchProduct.getPrice());
+					product.setProductStock(patchProduct.getStock());
+					product = this.productRepository.save(product);
+					updatedProduct.set(product);
+
+					return updatedProduct;
+				})
+				.orElseGet(()->{
+					Product newProduct = new Product();
+					newProduct.setName(patchProduct.getName());
+					newProduct.setBrand(patchProduct.getBrand());
+					newProduct.setDescription(patchProduct.getDescription());
+					newProduct.setPrice(patchProduct.getPrice());
+					newProduct.setProductStock(patchProduct.getStock());
+					newProduct = this.productRepository.save(newProduct);
+					updatedProduct.set(newProduct);
+					return updatedProduct;
+				});
+
+		return updatedProduct.get();
+	}
 	// Test avec ma classe Utilitaire
 	@PostMapping("/saveProduct")
 	public Product saveProduct(@RequestBody final ProductFormData productFormData) throws IOException {
 		//on map notre objet de la requête
 		//ProductFormData productFormData = new ObjectMapper().readValue(formProduct, ProductFormData.class);
-		//on recupère la liste des photos du produits
+		//on recupère la liste des photos du produit qu'on veut enregistrer
 		List<String> imagesNames = productFormData.getFilesNames();
 		List<Photo> productPhotos = new ArrayList<>();
 		Photo photo = null;
@@ -170,6 +249,7 @@ public class CatalogueController {
 
 		return null;
 	}
+
 
 
 	// Test avec ma classe Utilitaire

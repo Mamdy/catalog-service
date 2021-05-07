@@ -12,6 +12,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -57,16 +59,19 @@ public class ProductInOrder {
     @Min(1)
     private Integer count;
 
+    @NotEmpty
+    private List<Photo> photos = new ArrayList<>();
+
 
     public ProductInOrder(Product product, Integer quantity) {
         this.productId = product.getId();
         this.productCode = product.getCode();
         this.productName = product.getName();
         this.productDescription = product.getDescription();
-        this.productIcon = product.getPhotoUrl().get(0);
         this.categoryType = product.getCategory().getName();
         this.productPrice = new BigDecimal(product.getPrice());
         this.productStock = product.getProductStock();
+        this.photos = product.getPhotos();
         this.count = quantity;
     }
 
@@ -81,6 +86,7 @@ public class ProductInOrder {
                 ", categoryType=" + categoryType +
                 ", productPrice=" + productPrice +
                 ", productStock=" + productStock +
+                ", photos=" + photos +
                 ", count=" + count +
                 '}';
     }

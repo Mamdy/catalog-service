@@ -13,7 +13,7 @@ import java.util.Optional;
 
 //import org.springframework.web.bind.annotation.CrossOrigin;
 //CrossOrigin("*")
-//@RepositoryRestResource(collectionResourceRel = "products", path = "products")
+@RepositoryRestResource(collectionResourceRel = "products", path = "products")
 //@RepositoryRestResource
 public interface ProductRepository extends MongoRepository<Product, String> {
     @Query("{ 'name' : ?0 }")

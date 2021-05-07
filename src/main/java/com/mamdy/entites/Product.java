@@ -57,7 +57,7 @@ public class Product {
 	@ColumnDefault("0")
 	private Integer productStatus;
 	private List<String> photoUrl = new ArrayList<>();
-	@DBRef
+	//@DBRef
 	private List<Photo> photos = new ArrayList<>();
 	@JsonIgnore
 	private int supplierId;
