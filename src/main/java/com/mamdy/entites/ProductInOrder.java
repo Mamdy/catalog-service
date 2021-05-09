@@ -69,7 +69,7 @@ public class ProductInOrder {
         this.productName = product.getName();
         this.productDescription = product.getDescription();
         this.categoryType = product.getCategory().getName();
-        this.productPrice = new BigDecimal(product.getPrice());
+        this.productPrice = new BigDecimal(product.getCurrentPrice());
         this.productStock = product.getProductStock();
         this.photos = product.getPhotos();
         this.count = quantity;
